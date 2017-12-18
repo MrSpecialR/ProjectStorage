@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ProjectStorage.Web.Areas.Administrator.Models.User.UserListingModel>
+
+@{
+    ViewBag.Title = "title";
+    var counter = 1;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Roles
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model)
+        {
+            if (user.Roles.Count == 0)
+            {
+                user.Roles.Add("User");
+            }
+            <tr>
+                <td>@counter</td>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>@string.Join(", ", user.Roles)</td>
+                <td>
+
+                    @Html.ActionLink("Edit", "Edit", "User", new { id = user.Id }, new { @class = "btn btn-sm btn-success" })
+
+                    @Html.ActionLink("Delete", "Delete", "User", new {id = user.Id}, new {@class = "btn btn-sm btn-danger"})
+                </td>
+            </tr>
+            counter++;
+        }
+    </tbody>
+</table>

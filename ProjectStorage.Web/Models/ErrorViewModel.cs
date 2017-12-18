@@ -1,5 +1,3 @@
-using System;
-
 namespace ProjectStorage.Web.Models
 {
     public class ErrorViewModel

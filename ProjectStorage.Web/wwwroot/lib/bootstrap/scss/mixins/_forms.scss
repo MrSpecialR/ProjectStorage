@@ -20,9 +20,7 @@
   }
 }
 
-
 @mixin form-validation-state($state, $color) {
-
   .form-control,
   .custom-select {
     .was-validated &:#{$state},
@@ -39,7 +37,6 @@
       }
     }
   }
-
 
   // TODO: redo check markup lol crap
   .form-check-input {

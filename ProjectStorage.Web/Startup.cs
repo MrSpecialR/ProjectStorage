@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace ProjectStorage.Web
+﻿namespace ProjectStorage.Web
 {
     using AutoMapper;
     using Data;
     using Data.Models;
+    using Extensions;
     using Infrastructure.Configuration;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
-    using Services;
     using System.IO;
 
     public class Startup
@@ -25,18 +24,21 @@ namespace ProjectStorage.Web
         }
 
         public IConfiguration Configuration { get; }
-        
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ProjectStorageDbContext>(options =>
                 options.UseSqlServer(ConnectionStrings.DefaultConnection));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<ProjectStorageDbContext>()
                 .AddDefaultTokenProviders();
-            
-            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddAutoMapper(cfg => cfg.AddProfile(new SetupAutoMapper()));
 
@@ -45,7 +47,6 @@ namespace ProjectStorage.Web
                 options.Filters.Add<ValidateAntiForgeryTokenAttribute>();
             });
         }
-        
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -69,9 +70,9 @@ namespace ProjectStorage.Web
                 RequestPath = new PathString("/StaticFiles")
             });
 
-            
-
             app.UseAuthentication();
+
+            app.SeedAndMigrateDatabase();
 
             app.UseMvc(routes =>
             {

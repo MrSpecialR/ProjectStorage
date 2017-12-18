@@ -10,165 +10,163 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 
 var Button = function ($) {
-
-  /**
-   * ------------------------------------------------------------------------
-   * Constants
-   * ------------------------------------------------------------------------
-   */
-
-  var NAME = 'button';
-  var VERSION = '4.0.0-beta';
-  var DATA_KEY = 'bs.button';
-  var EVENT_KEY = '.' + DATA_KEY;
-  var DATA_API_KEY = '.data-api';
-  var JQUERY_NO_CONFLICT = $.fn[NAME];
-
-  var ClassName = {
-    ACTIVE: 'active',
-    BUTTON: 'btn',
-    FOCUS: 'focus'
-  };
-
-  var Selector = {
-    DATA_TOGGLE_CARROT: '[data-toggle^="button"]',
-    DATA_TOGGLE: '[data-toggle="buttons"]',
-    INPUT: 'input',
-    ACTIVE: '.active',
-    BUTTON: '.btn'
-  };
-
-  var Event = {
-    CLICK_DATA_API: 'click' + EVENT_KEY + DATA_API_KEY,
-    FOCUS_BLUR_DATA_API: 'focus' + EVENT_KEY + DATA_API_KEY + ' ' + ('blur' + EVENT_KEY + DATA_API_KEY)
-
     /**
      * ------------------------------------------------------------------------
-     * Class Definition
+     * Constants
      * ------------------------------------------------------------------------
      */
 
-  };
-  var Button = function () {
-    function Button(element) {
-      _classCallCheck(this, Button);
+    var NAME = 'button';
+    var VERSION = '4.0.0-beta';
+    var DATA_KEY = 'bs.button';
+    var EVENT_KEY = '.' + DATA_KEY;
+    var DATA_API_KEY = '.data-api';
+    var JQUERY_NO_CONFLICT = $.fn[NAME];
 
-      this._element = element;
-    }
+    var ClassName = {
+        ACTIVE: 'active',
+        BUTTON: 'btn',
+        FOCUS: 'focus'
+    };
 
-    // getters
+    var Selector = {
+        DATA_TOGGLE_CARROT: '[data-toggle^="button"]',
+        DATA_TOGGLE: '[data-toggle="buttons"]',
+        INPUT: 'input',
+        ACTIVE: '.active',
+        BUTTON: '.btn'
+    };
 
-    // public
+    var Event = {
+        CLICK_DATA_API: 'click' + EVENT_KEY + DATA_API_KEY,
+        FOCUS_BLUR_DATA_API: 'focus' + EVENT_KEY + DATA_API_KEY + ' ' + ('blur' + EVENT_KEY + DATA_API_KEY)
 
-    Button.prototype.toggle = function toggle() {
-      var triggerChangeEvent = true;
-      var addAriaPressed = true;
-      var rootElement = $(this._element).closest(Selector.DATA_TOGGLE)[0];
+        /**
+         * ------------------------------------------------------------------------
+         * Class Definition
+         * ------------------------------------------------------------------------
+         */
+    };
+    var Button = function () {
+        function Button(element) {
+            _classCallCheck(this, Button);
 
-      if (rootElement) {
-        var input = $(this._element).find(Selector.INPUT)[0];
+            this._element = element;
+        }
 
-        if (input) {
-          if (input.type === 'radio') {
-            if (input.checked && $(this._element).hasClass(ClassName.ACTIVE)) {
-              triggerChangeEvent = false;
-            } else {
-              var activeElement = $(rootElement).find(Selector.ACTIVE)[0];
+        // getters
 
-              if (activeElement) {
-                $(activeElement).removeClass(ClassName.ACTIVE);
-              }
+        // public
+
+        Button.prototype.toggle = function toggle() {
+            var triggerChangeEvent = true;
+            var addAriaPressed = true;
+            var rootElement = $(this._element).closest(Selector.DATA_TOGGLE)[0];
+
+            if (rootElement) {
+                var input = $(this._element).find(Selector.INPUT)[0];
+
+                if (input) {
+                    if (input.type === 'radio') {
+                        if (input.checked && $(this._element).hasClass(ClassName.ACTIVE)) {
+                            triggerChangeEvent = false;
+                        } else {
+                            var activeElement = $(rootElement).find(Selector.ACTIVE)[0];
+
+                            if (activeElement) {
+                                $(activeElement).removeClass(ClassName.ACTIVE);
+                            }
+                        }
+                    }
+
+                    if (triggerChangeEvent) {
+                        if (input.hasAttribute('disabled') || rootElement.hasAttribute('disabled') || input.classList.contains('disabled') || rootElement.classList.contains('disabled')) {
+                            return;
+                        }
+                        input.checked = !$(this._element).hasClass(ClassName.ACTIVE);
+                        $(input).trigger('change');
+                    }
+
+                    input.focus();
+                    addAriaPressed = false;
+                }
             }
-          }
 
-          if (triggerChangeEvent) {
-            if (input.hasAttribute('disabled') || rootElement.hasAttribute('disabled') || input.classList.contains('disabled') || rootElement.classList.contains('disabled')) {
-              return;
+            if (addAriaPressed) {
+                this._element.setAttribute('aria-pressed', !$(this._element).hasClass(ClassName.ACTIVE));
             }
-            input.checked = !$(this._element).hasClass(ClassName.ACTIVE);
-            $(input).trigger('change');
-          }
 
-          input.focus();
-          addAriaPressed = false;
+            if (triggerChangeEvent) {
+                $(this._element).toggleClass(ClassName.ACTIVE);
+            }
+        };
+
+        Button.prototype.dispose = function dispose() {
+            $.removeData(this._element, DATA_KEY);
+            this._element = null;
+        };
+
+        // static
+
+        Button._jQueryInterface = function _jQueryInterface(config) {
+            return this.each(function () {
+                var data = $(this).data(DATA_KEY);
+
+                if (!data) {
+                    data = new Button(this);
+                    $(this).data(DATA_KEY, data);
+                }
+
+                if (config === 'toggle') {
+                    data[config]();
+                }
+            });
+        };
+
+        _createClass(Button, null, [{
+            key: 'VERSION',
+            get: function get() {
+                return VERSION;
+            }
+        }]);
+
+        return Button;
+    }();
+
+    /**
+     * ------------------------------------------------------------------------
+     * Data Api implementation
+     * ------------------------------------------------------------------------
+     */
+
+    $(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
+        event.preventDefault();
+
+        var button = event.target;
+
+        if (!$(button).hasClass(ClassName.BUTTON)) {
+            button = $(button).closest(Selector.BUTTON);
         }
-      }
 
-      if (addAriaPressed) {
-        this._element.setAttribute('aria-pressed', !$(this._element).hasClass(ClassName.ACTIVE));
-      }
+        Button._jQueryInterface.call($(button), 'toggle');
+    }).on(Event.FOCUS_BLUR_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
+        var button = $(event.target).closest(Selector.BUTTON)[0];
+        $(button).toggleClass(ClassName.FOCUS, /^focus(in)?$/.test(event.type));
+    });
 
-      if (triggerChangeEvent) {
-        $(this._element).toggleClass(ClassName.ACTIVE);
-      }
+    /**
+     * ------------------------------------------------------------------------
+     * jQuery
+     * ------------------------------------------------------------------------
+     */
+
+    $.fn[NAME] = Button._jQueryInterface;
+    $.fn[NAME].Constructor = Button;
+    $.fn[NAME].noConflict = function () {
+        $.fn[NAME] = JQUERY_NO_CONFLICT;
+        return Button._jQueryInterface;
     };
-
-    Button.prototype.dispose = function dispose() {
-      $.removeData(this._element, DATA_KEY);
-      this._element = null;
-    };
-
-    // static
-
-    Button._jQueryInterface = function _jQueryInterface(config) {
-      return this.each(function () {
-        var data = $(this).data(DATA_KEY);
-
-        if (!data) {
-          data = new Button(this);
-          $(this).data(DATA_KEY, data);
-        }
-
-        if (config === 'toggle') {
-          data[config]();
-        }
-      });
-    };
-
-    _createClass(Button, null, [{
-      key: 'VERSION',
-      get: function get() {
-        return VERSION;
-      }
-    }]);
 
     return Button;
-  }();
-
-  /**
-   * ------------------------------------------------------------------------
-   * Data Api implementation
-   * ------------------------------------------------------------------------
-   */
-
-  $(document).on(Event.CLICK_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
-    event.preventDefault();
-
-    var button = event.target;
-
-    if (!$(button).hasClass(ClassName.BUTTON)) {
-      button = $(button).closest(Selector.BUTTON);
-    }
-
-    Button._jQueryInterface.call($(button), 'toggle');
-  }).on(Event.FOCUS_BLUR_DATA_API, Selector.DATA_TOGGLE_CARROT, function (event) {
-    var button = $(event.target).closest(Selector.BUTTON)[0];
-    $(button).toggleClass(ClassName.FOCUS, /^focus(in)?$/.test(event.type));
-  });
-
-  /**
-   * ------------------------------------------------------------------------
-   * jQuery
-   * ------------------------------------------------------------------------
-   */
-
-  $.fn[NAME] = Button._jQueryInterface;
-  $.fn[NAME].Constructor = Button;
-  $.fn[NAME].noConflict = function () {
-    $.fn[NAME] = JQUERY_NO_CONFLICT;
-    return Button._jQueryInterface;
-  };
-
-  return Button;
 }(jQuery);
 //# sourceMappingURL=button.js.map

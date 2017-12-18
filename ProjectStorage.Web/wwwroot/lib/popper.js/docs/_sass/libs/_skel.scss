@@ -73,7 +73,6 @@
 	/// @param {integer} $index Index.
 	/// @return {list} Updated list.
 	@function remove-nth($list, $index) {
-
 		$result: null;
 
 		@if type-of($index) != number {
@@ -86,22 +85,17 @@
 			@warn "List index is #{$index} but list is only #{length($list)} item long for `remove-nth`.";
 		}
 		@else {
-
 			$result: ();
 			$index: if($index < 0, length($list) + $index + 1, $index);
 
 			@for $i from 1 through length($list) {
-
 				@if $i != $index {
 					$result: append($result, nth($list, $i));
 				}
-
 			}
-
 		}
 
 		@return $result;
-
 	}
 
 	/// Replaces a substring within another string.
@@ -111,7 +105,6 @@
 	/// @param {string} $replace Replacement.
 	/// @return {string} Updated string.
 	@function str-replace($string, $search, $replace: '') {
-
 		$index: str-index($string, $search);
 
 		@if $index {
@@ -119,7 +112,6 @@
 		}
 
 		@return $string;
-
 	}
 
 	/// Replaces a substring within each string in a list.
@@ -128,13 +120,11 @@
 	/// @param {string} $replace Replacement.
 	/// @return {list} Updated list of strings.
 	@function str-replace-all($strings, $search, $replace: '') {
-
 		@each $string in $strings {
 			$strings: set-nth($strings, index($strings, $string), str-replace($string, $search, $replace));
 		}
 
 		@return $strings;
-
 	}
 
 	/// Gets a value from a map.
@@ -143,7 +133,6 @@
 	/// @param {string} $keys Key(s).
 	/// @return {string} Value.
 	@function val($map, $keys...) {
-
 		@if nth($keys, 1) == null {
 			$keys: remove-nth($keys, 1);
 		}
@@ -153,7 +142,6 @@
 		}
 
 		@return $map;
-
 	}
 
 // Mixins.
@@ -161,7 +149,6 @@
 	/// Sets the global box model.
 	/// @param {string} $model Model (default is content).
 	@mixin boxModel($model: 'content') {
-
 		$x: $model + '-box';
 
 		*, *:before, *:after {
@@ -169,14 +156,12 @@
 			-webkit-box-sizing: #{$x};
 			box-sizing: #{$x};
 		}
-
 	}
 
 	/// Wraps @content in a @media block using a given breakpoint.
 	/// @param {string} $breakpoint Breakpoint.
 	/// @param {map} $queries Additional queries.
 	@mixin breakpoint($breakpoint: null, $queries: null) {
-
 		$query: 'screen';
 
 		// Breakpoint.
@@ -194,7 +179,6 @@
         @media #{$query} {
             @content;
         }
-
 	}
 
 	/// Wraps @content in a @media block targeting a specific orientation.
@@ -208,7 +192,6 @@
 	/// Utility mixin for containers.
 	/// @param {mixed} $width Width.
 	@mixin containers($width) {
-
 		// Locked?
 			$lock: false;
 
@@ -232,14 +215,12 @@
 					width: $width;
 				}
 			}
-
 	}
 
 	/// Utility mixin for grid.
 	/// @param {list} $gutters Column and row gutters (default is 40px).
 	/// @param {string} $breakpointName Optional breakpoint name.
 	@mixin grid($gutters: 40px, $breakpointName: null) {
-
 		// Gutters.
 			@include grid-gutters($gutters);
 			@include grid-gutters($gutters, \32 00\25, 2);
@@ -293,7 +274,6 @@
 			.\-3u#{$x} { margin-left: 25% }
 			.\-2u#{$x} { margin-left: 16.6666666667% }
 			.\-1u#{$x} { margin-left: 8.3333333333% }
-
 	}
 
 	/// Utility mixin for grid.
@@ -301,7 +281,6 @@
 	/// @param {string} $class Optional class name.
 	/// @param {integer} $multiplier Multiplier (default is 1).
 	@mixin grid-gutters($gutters, $class: null, $multiplier: 1) {
-
 		// Expand gutters if it's not a list.
 			@if length($gutters) == 1 {
 				$gutters: ($gutters, 0);
@@ -325,18 +304,15 @@
 		// Uniform.
 			.row.uniform#{$x} > * { padding: ($c * $multiplier) 0 0 ($c * $multiplier); }
 			.row.uniform#{$x} { margin: ($c * $multiplier * -1) 0 -1px ($c * $multiplier * -1); }
-
 	}
 
 	/// Wraps @content in vendorized keyframe blocks.
 	/// @param {string} $name Name.
 	@mixin keyframes($name) {
-
 		@-moz-keyframes #{$name} { @content; }
 		@-webkit-keyframes #{$name} { @content; }
 		@-ms-keyframes #{$name} { @content; }
 		@keyframes #{$name} { @content; }
-
 	}
 
 	///
@@ -352,7 +328,6 @@
 	/// @param {map} config Config.
 	///
 	@mixin skel-layout($config: ()) {
-
 		// Config.
 			$configPerBreakpoint: ();
 
@@ -366,29 +341,24 @@
 			$x: map-get($config, 'reset');
 
 			@if $x {
-
 				/* Reset */
 
 				@include reset($x);
-
 			}
 
 		// Box model.
 			$x: map-get($config, 'boxModel');
 
 			@if $x {
-
 				/* Box Model */
 
 				@include boxModel($x);
-
 			}
 
 		// Containers.
 			$containers: map-get($config, 'containers');
 
 			@if $containers {
-
 				/* Containers */
 
 				.container {
@@ -406,7 +376,6 @@
 
 				// Apply per-breakpoint.
 					@each $name in map-keys($breakpoints) {
-
 						// Get/use breakpoint setting if it exists.
 							$x: map-get($configPerBreakpoint, $name);
 
@@ -418,23 +387,19 @@
 										@if $y {
 											$containers: $y;
 										}
-
 								}
 
 						// Create @media block.
 							@media screen and #{map-get($breakpoints, $name)} {
 								@include containers($containers);
 							}
-
 					}
-
 			}
 
 		// Grid.
 			$grid: map-get($config, 'grid');
 
 			@if $grid {
-
 				/* Grid */
 
 				// Use defaults if $grid is just "true".
@@ -488,7 +453,6 @@
 
 				// Apply per-breakpoint.
 					@each $name in map-keys($breakpoints) {
-
 						// Get/use breakpoint setting if it exists.
 							$x: map-get($configPerBreakpoint, $name);
 
@@ -498,53 +462,40 @@
 
 									// Setting exists?
 										@if $y {
-
 											// Sub-setting: Gutters.
 												$x: map-get($y, 'gutters');
 
 												@if $x {
 													$grid-gutters: $x;
 												}
-
 										}
-
 								}
 
 						// Create @media block.
 							@media screen and #{map-get($breakpoints, $name)} {
 								@include grid($grid-gutters, $name);
 							}
-
 					}
-
 			}
-
 	}
 
 	/// Resets browser styles.
 	/// @param {string} $mode Mode (default is 'normalize').
 	@mixin reset($mode: 'normalize') {
-
 		@if $mode == 'normalize' {
-
 			// normalize.css v3.0.2 | MIT License | git.io/normalize
 				html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{height:auto}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:700}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
-
 		}
 		@else if $mode == 'full' {
-
 			// meyerweb.com/eric/tools/css/reset v2.0 | 20110126 | License: none (public domain)
 				html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}body{line-height:1;}ol,ul{list-style:none;}blockquote,q{quotes:none;}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}table{border-collapse:collapse;border-spacing:0;}body{-webkit-text-size-adjust:none}
-
 		}
-
 	}
 
 	/// Vendorizes a declaration's property and/or value(s).
 	/// @param {string} $property Property.
 	/// @param {mixed} $value String/list of value(s).
 	@mixin vendor($property, $value) {
-
 		// Determine if property should expand.
 			$expandProperty: index($vendor-properties, $property);
 
@@ -554,10 +505,8 @@
 			@each $x in $value {
 				@each $y in $vendor-values {
 					@if $y == str-slice($x, 1, str-length($y)) {
-
 						$value: set-nth($value, index($value, $x), '-prefix-' + $x);
 						$expandValue: true;
-
 					}
 				}
 			}
@@ -580,5 +529,4 @@
 			@else {
 		        #{$property}: #{$value};
 			}
-
 	}

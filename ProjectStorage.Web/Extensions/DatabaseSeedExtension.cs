@@ -40,7 +40,7 @@
                             User user = new User()
                             {
                                 Email = $"{role}@users.com",
-                                UserName = $"{role}@users.com",
+                                UserName = $"{role}@users.com"
                             };
 
                             await userManager.CreateAsync(user, role.ToLower());

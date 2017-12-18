@@ -14,7 +14,6 @@
 //  }
 }
 
-
 @mixin hover-focus {
   @if $enable-hover-media-query {
     &:focus { @content }

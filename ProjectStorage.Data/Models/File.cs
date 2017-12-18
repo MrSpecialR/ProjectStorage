@@ -1,12 +1,20 @@
 ﻿namespace ProjectStorage.Data.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class File
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
 
+        [Required]
+        [StringLength(100, MinimumLength = 1)]
         public string Name { get; set; }
 
-        public string Location { get; set; }
+        [Required]
+        public string Path { get; set; }
 
         public int FileTypeId { get; set; }
         public FileType FileType { get; set; }
@@ -15,7 +23,7 @@
 
         public Project Project { get; set; }
 
-        public int? FolderId { get; set; }
+        public Guid? FolderId { get; set; }
 
         public Folder Folder { get; set; }
 

@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
   </ItemGroup>
@@ -26,7 +27,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
+    <Folder Include="Areas\Image\Controllers\" />
+    <Folder Include="Areas\Image\Models\" />
+    <Folder Include="Areas\Image\Views\" />
+    <Folder Include="Areas\Moderator\Controllers\" />
+    <Folder Include="Areas\Moderator\Models\" />
+    <Folder Include="Areas\Moderator\Views\" />
+    <Folder Include="Areas\Project\Controllers\" />
+    <Folder Include="Areas\Project\Models\" />
+    <Folder Include="Areas\Project\Views\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

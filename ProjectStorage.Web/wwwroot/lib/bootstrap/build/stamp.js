@@ -1,15 +1,15 @@
 const fs = require('fs')
 
 fs.readFile('package.json', (err, data) => {
-  if (err) {
-    throw err
-  }
+    if (err) {
+        throw err
+    }
 
-  const pkg = JSON.parse(data)
-  const year = new Date().getFullYear()
+    const pkg = JSON.parse(data)
+    const year = new Date().getFullYear()
 
-  const stampTop =
-`/*!
+    const stampTop =
+        `/*!
  * Bootstrap v${pkg.version} (${pkg.homepage})
  * Copyright 2011-${year} ${pkg.author}
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -28,14 +28,14 @@ if (typeof jQuery === 'undefined') {
 
 (function () {
 `
-  const stampEnd = `
+    const stampEnd = `
 })();`
 
-  process.stdout.write(stampTop)
+    process.stdout.write(stampTop)
 
-  process.stdin.on('end', () => {
-    process.stdout.write(stampEnd)
-  })
+    process.stdin.on('end', () => {
+        process.stdout.write(stampEnd)
+    })
 
-  process.stdin.pipe(process.stdout)
+    process.stdin.pipe(process.stdout)
 })

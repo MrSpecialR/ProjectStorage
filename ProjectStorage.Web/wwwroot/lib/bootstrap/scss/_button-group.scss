@@ -79,14 +79,12 @@
   @include border-left-radius(0);
 }
 
-
 // Sizing
 //
 // Remix the default button sizing classes into new ones for easier manipulation.
 
 .btn-group-sm > .btn { @extend .btn-sm; }
 .btn-group-lg > .btn { @extend .btn-lg; }
-
 
 //
 // Split button dropdowns
@@ -111,7 +109,6 @@
   padding-left: $input-btn-padding-x-lg * .75;
 }
 
-
 // The clickable button for toggling the menu
 // Set the same inset shadow as the :active state
 .btn-group.show .dropdown-toggle {
@@ -122,7 +119,6 @@
     @include box-shadow(none);
   }
 }
-
 
 //
 // Vertical button groups
@@ -171,7 +167,6 @@
 .btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
   @include border-top-radius(0);
 }
-
 
 // Checkbox and radio options
 //

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-
     public class Project
     {
         public int Id { get; set; }
@@ -23,5 +22,7 @@
         public IList<File> Files { get; set; } = new List<File>();
 
         public DateTime UploadDate { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }
