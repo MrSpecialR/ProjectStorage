@@ -17,6 +17,8 @@
 
         public IList<UserFavouriteImages> UsersLiked { get; set; } = new List<UserFavouriteImages>();
 
+        public IList<CategoryImage> Categories { get; set; } = new List<CategoryImage>();
+
         [Required]
         public string Path { get; set; }
     }

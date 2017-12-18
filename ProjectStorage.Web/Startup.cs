@@ -1,4 +1,7 @@
-﻿namespace ProjectStorage.Web
+﻿using ProjectStorage.Services;
+using ProjectStorage.Services.Implementations;
+
+namespace ProjectStorage.Web
 {
     using AutoMapper;
     using Data;
@@ -39,6 +42,10 @@
                 })
                 .AddEntityFrameworkStores<ProjectStorageDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IImageService, ImageService>();
 
             services.AddAutoMapper(cfg => cfg.AddProfile(new SetupAutoMapper()));
 

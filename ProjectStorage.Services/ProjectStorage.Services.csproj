@@ -6,10 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProjectStorage.Data\ProjectStorage.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\ProjectStorage.Infrastructure\ProjectStorage.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,21 @@
+﻿@model CategoryListingServiceModel
+
+@{
+    ViewBag.Title = "Delete Category";
+}
+
+<br />
+
+<h2>Delete Category - @Model.Name</h2>
+<hr />
+<form method="post">
+    <div class="col-md-4">
+        <div class="form-group row">
+            <label asp-for="Name" class="col-2 col-form-label">Name</label>
+            <div class="col-10">
+                <input disabled asp-for="Name" class="form-control" />
+            </div>
+        </div>
+        <input type="submit" class="btn btn-danger" value="Delete" />
+    </div>
+</form>

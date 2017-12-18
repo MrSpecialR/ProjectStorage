@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-
-namespace ProjectStorage.Web.Areas.Administrator.Controllers
+﻿namespace ProjectStorage.Web.Areas.Administrator.Controllers
 {
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Data.Models;
+    using Extensions;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Models.User;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public class UserController : AdministratorBaseController
     {
@@ -26,15 +26,16 @@ namespace ProjectStorage.Web.Areas.Administrator.Controllers
         }
 
 
-        public async Task<IActionResult> All()
+        public IActionResult All()
         {
-            var userRoles = this.userManager.Users.ToList().Select(async u =>  new
+            var userRoles = this.userManager.Users.ToList().Select(async u => new
             {
-                Id = u.Id,
+                u.Id,
                 Roles = (await this.userManager.GetRolesAsync(u))
             })
             .Select(u => u.Result)
             .ToList();
+
             return this.View(this.userManager.Users.ProjectTo<UserListingModel>().ToList().Select(u =>
             {
                 u.Roles = userRoles.First(ur => ur.Id == u.Id).Roles;
@@ -44,7 +45,22 @@ namespace ProjectStorage.Web.Areas.Administrator.Controllers
 
         public IActionResult Delete(string id)
         {
-            return null;
+            return this.ViewOrNotFound(this.userManager.Users.Where(u => u.Id == id).ProjectTo<UserDeleteViewModel>().FirstOrDefault());
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> Delete_Post(string id)
+        {
+            User user = await this.userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.userManager.DeleteAsync(user);
+
+            return this.RedirectToAction("All");
         }
 
         public async Task<IActionResult> Edit(string id)

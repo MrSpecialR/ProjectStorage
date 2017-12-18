@@ -1,0 +1,17 @@
+﻿@model ProjectStorage.Web.Areas.Administrator.Models.User.UserDeleteViewModel
+<hr />
+
+<h2>Are you sure you want to delete user @Model.Username with email @Model.Email?<br/>
+    This action can not be undone!</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="All">Back to All Courses</a>
+</div>
