@@ -1,0 +1,39 @@
+﻿@model ProjectStorage.Web.Areas.Image.Models.Image.ImageCreateViewModel
+
+@{
+    ViewBag.Title = "Upload an Image";
+}
+
+<br />
+
+<h2>Upload an Image</h2>
+<hr />
+<form method="post" enctype="multipart/form-data">
+    <div class="col-md-4">
+
+        <div class="form-group row">
+            <label asp-for="Title" class="col-2 col-form-label">Title</label>
+            <div class="col-10">
+                <input asp-for="Title" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Image" class="col-2 col-form-label">Image</label>
+            <div class="col-10">
+                <input type="file" asp-for="Image" class="form-control" accept="image/*"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Categories" class="col-2 col-form-label">Categories</label>
+            <div class="col-10">
+                <select multiple asp-for='Category'>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Value">@category.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Create"/>
+    </div>
+</form>

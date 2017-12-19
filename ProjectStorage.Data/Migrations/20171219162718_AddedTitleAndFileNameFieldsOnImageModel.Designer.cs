@@ -11,9 +11,10 @@ using System;
 namespace ProjectStorage.Data.Migrations
 {
     [DbContext(typeof(ProjectStorageDbContext))]
-    partial class ProjectStorageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171219162718_AddedTitleAndFileNameFieldsOnImageModel")]
+    partial class AddedTitleAndFileNameFieldsOnImageModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,8 +232,6 @@ namespace ProjectStorage.Data.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100);
-
-                    b.Property<DateTime>("UploadDate");
 
                     b.Property<string>("UploaderId")
                         .IsRequired();

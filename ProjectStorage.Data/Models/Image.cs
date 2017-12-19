@@ -15,9 +15,19 @@
 
         public User Uploader { get; set; }
 
+        [Required]
+        [StringLength(100, MinimumLength = 4)]
+        public string Title { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 4)]
+        public string OriginalFileName { get; set; }
+
         public IList<UserFavouriteImages> UsersLiked { get; set; } = new List<UserFavouriteImages>();
 
         public IList<CategoryImage> Categories { get; set; } = new List<CategoryImage>();
+
+        public DateTime UploadDate { get; set; }
 
         [Required]
         public string Path { get; set; }
