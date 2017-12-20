@@ -14,5 +14,10 @@ namespace ProjectStorage.Services
         void Delete(string imageId);
 
         IEnumerable<ImageListingServiceModel> GetImagesByUser(string userId);
+
+        ImagePageModel GetImagesDescendingByPage(int page);
+
+        IEnumerable<ImageListingServiceModel> GetLikedImages(string userId);
+        byte[] GetImage(string id);
     }
 }

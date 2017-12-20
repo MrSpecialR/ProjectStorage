@@ -30,9 +30,6 @@
     <Folder Include="Areas\Moderator\Controllers\" />
     <Folder Include="Areas\Moderator\Models\" />
     <Folder Include="Areas\Moderator\Views\" />
-    <Folder Include="Areas\Project\Controllers\" />
-    <Folder Include="Areas\Project\Models\" />
-    <Folder Include="Areas\Project\Views\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

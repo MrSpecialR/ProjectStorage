@@ -46,7 +46,7 @@ namespace ProjectStorage.Services.Implementations
             this.db.SaveChanges();
 
             this.SaveFile(userId, imageId.ToString(), imageImage);
-            
+
         }
 
         public void Edit(string imageId, string title, IEnumerable<int> imageCategory)
@@ -85,9 +85,26 @@ namespace ProjectStorage.Services.Implementations
             return this.db.Images.Where(u => u.UploaderId == userId).ProjectTo<ImageListingServiceModel>().ToList();
         }
 
+        public ImagePageModel GetImagesDescendingByPage(int page)
+        {
+            int pageCount = (int) Math.Ceiling(this.db.Images.Count() / 20.0);
+            return new ImagePageModel
+            {
+                Images = this.db.Images.Skip((page - 1) * 20).Take(20).ProjectTo<ImageListingServiceModel>().ToList(),
+                Pages = pageCount,
+                CurrentPage = page
+            };
+        }
+
         public IEnumerable<ImageListingServiceModel> GetLikedImages(string userId)
         {
-            return this.db.UserFavouriteImages.Where(u => u.UserId == userId).Select(ufi=>ufi.Image).ProjectTo<ImageListingServiceModel>().ToList();
+            return this.db.UserFavouriteImages.Where(u => u.UserId == userId).Select(ufi => ufi.Image).ProjectTo<ImageListingServiceModel>().ToList();
+        }
+
+        public byte[] GetImage(string id)
+        {
+            var image = this.db.Images.FirstOrDefault(i => i.Id.ToString() == id);
+            return System.IO.File.ReadAllBytes(image.Path);
         }
 
         private bool SaveFile(string userId, string imageId, IFormFile file)
