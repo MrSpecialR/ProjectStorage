@@ -19,6 +19,8 @@ namespace ProjectStorage.Data.Models
         [StringLength(200, MinimumLength = 2)]
         public string FolderName { get; set; }
 
+        public string Path { get; set; }
+        
         public Guid? ParentId { get; set; }
 
         public Folder Parent { get; set; }

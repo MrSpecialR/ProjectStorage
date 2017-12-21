@@ -29,7 +29,7 @@
                         <a class="nav-link" asp-area="Image" asp-controller="Home" asp-action="Index">Browse Images</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" asp-area="Project" asp-controller="Home" asp-action="Index">Browse Projects</a>
+                        <a class="nav-link" asp-area="Project" asp-controller="Manage" asp-action="Browse">Browse Projects</a>
                     </li>
 
                     @if (User.IsInRole(GlobalConstants.AdministratorRole))

@@ -17,5 +17,10 @@
         {
             return this.ViewOrNotFound(this.folderService.GetFolder(id));
         }
+
+        public IActionResult Download(string id)
+        {
+            return this.File(this.folderService.ZipFolder(id), "application/zip", this.folderService.GetFolder(id).FolderName + ".zip");
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model FolderInformationServiceModel
+
+@{
+    ViewBag.Title = "Projects Details";
+}
+<br />
+
+@Html.ActionLink("Back to All Projects", "Browse", "Manage", new {area="Project"}, new{@class="btn btn-primary"})
+
+@{
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+<hr />
+<div class="container-fluid">
+    
+    <h2>Folder - @Model.FolderName</h2>
+    <a href="/Project/Manage/Download/@id" download class="btn btn-primary">Download Project</a>
+
+    <hr/>
+    <table class="table table-bordered table-hover">
+        @foreach (var folder in Model.SubfolderIdentifiers.OrderBy(sf => sf.FolderName))
+        {
+            <tr>
+                <td>
+                    <strong>@Html.ActionLink(folder.FolderName, "Details", "Folders", new {area = "Project", id = folder.Id})</strong>
+                </td>
+            </tr>
+        }
+        @foreach (var file in Model.FilesInFolder.OrderBy(f => f.Name))
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(file.Name, "Details", "Files", new {area = "Project", id = file.Id})
+                </td>
+            </tr>
+        }
+    </table>
+</div>

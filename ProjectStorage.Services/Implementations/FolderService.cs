@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-
-namespace ProjectStorage.Services.Implementations
+﻿namespace ProjectStorage.Services.Implementations
 {
-    using System.Linq;
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Data;
+    using Microsoft.EntityFrameworkCore;
     using Models;
+    using System;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
 
     public class FolderService : IFolderService
     {
@@ -28,11 +29,32 @@ namespace ProjectStorage.Services.Implementations
                 return null;
             }
             var returnedObject = this.mapper.Map<FolderInformationServiceModel>(folderModel);
-            returnedObject.SubfolderIdentifiers = this.db.Folders.Where(f => f.ParentId == folderModel.Id).ProjectTo<SubfolderServiceModel>().ToList();
+            returnedObject.SubfolderIdentifiers = this.db.Folders.Where(f => f.ParentId == folderModel.Id)
+                .ProjectTo<SubfolderServiceModel>().ToList();
 
             returnedObject.FilesInFolder = folderModel.Files.Select(f => this.mapper.Map<FileServiceModel>(f)).ToList();
 
             return returnedObject;
         }
+
+        public byte[] ZipFolder(string id)
+        {
+            var directory = this.db.Folders.FirstOrDefault(f => f.Id.ToString() == id);
+
+            if (directory == null)
+            {
+                return null;
+            }
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    Zipper.ProcessDirectory(directory.Path, archive);
+                }
+                return memoryStream.ToArray();
+            }
+        }
+
+
     }
 }

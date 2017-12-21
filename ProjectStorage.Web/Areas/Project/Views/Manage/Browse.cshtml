@@ -1,0 +1,38 @@
+﻿@using ProjectStorage.Data.Models
+@using ProjectStorage.Web.Constants
+@model IEnumerable<ProjectListingModel>
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Browse Projects";
+}
+
+<div class="container-fluid">
+    <table class="table table-hover">
+        <thead>
+            <th>ID</th>
+            <th>Project Name</th>
+            <th>Uploader</th>
+            <th>Upload Date</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            @foreach (var project in Model)
+            {
+                <tr>
+                    <td>@project.Id</td>
+                    <td>@project.Name</td>
+                    <td>@project.UploaderName</td>
+                    <td>@project.UploadDate.ToShortDateString()</td>
+                    <td>
+                        @Html.ActionLink("View", "Details", "Manage", new { area = "Project", id = project.Id }, new { @class = "btn btn-info" })
+                        @if (User.IsInRole(GlobalConstants.ProjectTesterRole) || UserManager.GetUserName(User) == project.UploaderName)
+                        {
+                            @Html.ActionLink("Delete", "Delete", "Manage", new { area = "Project", id = project.Id }, new { @class = "btn btn-danger" })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

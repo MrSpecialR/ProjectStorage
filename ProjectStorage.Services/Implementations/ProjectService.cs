@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using ProjectStorage.Services.Models;
 
 namespace ProjectStorage.Services.Implementations
 {
@@ -31,6 +33,24 @@ namespace ProjectStorage.Services.Implementations
             this.folders = new Dictionary<string, Folder>();
         }
 
+        public FolderInformationServiceModel GetProject(int id)
+        {
+            var project = this.db.Projects.FirstOrDefault(p => p.Id == id);
+            if (project == null)
+            {
+                return null;
+            }
+
+            var folder = new FolderInformationServiceModel
+            {
+                FilesInFolder = this.db.Files.Where(f => f.ProjectId == id && f.IsInRootFolder).ProjectTo<FileServiceModel>().ToList(),
+                FolderName = project.Name,
+                SubfolderIdentifiers = this.db.Folders.Where(f => f.ProjectId == id && f.IsInRootFolder).ProjectTo<SubfolderServiceModel>().ToList()
+            };
+
+            return folder;
+        }
+
         public void Add(string userId, IFormFile file)
         {
             Guid id = Guid.NewGuid();
@@ -46,7 +66,7 @@ namespace ProjectStorage.Services.Implementations
                 Name = "Default Name for now",
                 IsPublic = false,
                 UploaderId = userId,
-                RootFolderName = root.ToString(),
+                RootFolderName = id.ToString(),
                 UploadDate = DateTime.UtcNow
             };
 
@@ -60,6 +80,7 @@ namespace ProjectStorage.Services.Implementations
             {
                 Id = root,
                 FolderName = Path.GetFileName(projectFolder),
+                Path = projectFolder,
                 ProjectId = project.Id,
                 IsInRootFolder = false
             });
@@ -93,12 +114,17 @@ namespace ProjectStorage.Services.Implementations
  
         }
 
+        public IEnumerable<ProjectListingModel> GetAllProjects()
+        {
+            return this.db.Projects.ProjectTo<ProjectListingModel>().ToList();
+        }
+
         private string GetFolderNameByProjectId(int id)
         {
             var project = this.db.Projects.Include("Files").FirstOrDefault(p => p.Id == id);
             var firstFile = project.Files.FirstOrDefault();
             var path = firstFile.Path;
-            var parts = path.Split(new string[]{ProjectsFolder}, StringSplitOptions.RemoveEmptyEntries).First().Split(new char[]{'\\'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+            var parts = path.Split(new []{ProjectsFolder}, StringSplitOptions.RemoveEmptyEntries).First().Split(new []{'\\'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
 
             return parts;
         }
@@ -139,6 +165,21 @@ namespace ProjectStorage.Services.Implementations
 
         }
 
+        public byte[] ZipProject(int id)
+        {
+            var directory = "~/../../Uploads/Projects//" +  this.db.Projects.FirstOrDefault(p => p.Id == id).RootFolderName;
+
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    Zipper.ProcessDirectory(directory, archive);
+                }
+                return memoryStream.ToArray();
+            }
+        }
+
         private void ProcessDirectory(string targetDirectory, int projectId, List<FileType> filetypes)
         {
             string[] fileEntries = Directory.GetFiles(targetDirectory);
@@ -150,10 +191,12 @@ namespace ProjectStorage.Services.Implementations
             string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
             foreach (string subdirectory in subdirectoryEntries)
             {
+                var folderName = Path.GetFileName(subdirectory);
                 this.folders.Add(subdirectory, new Folder
                 {
                     Id = Guid.NewGuid(),
-                    FolderName = Path.GetFileName(subdirectory),
+                    FolderName = folderName,
+                    Path = this.folders[targetDirectory].Path + "/" + folderName,
                     ParentId = this.folders[targetDirectory].Id,
                     IsInRootFolder = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder,
                     ProjectId = projectId
