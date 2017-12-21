@@ -19,5 +19,6 @@ namespace ProjectStorage.Services
 
         IEnumerable<ImageListingServiceModel> GetLikedImages(string userId);
         byte[] GetImage(string id);
+        ImageListingServiceModel GetImageModel(string id);
     }
 }

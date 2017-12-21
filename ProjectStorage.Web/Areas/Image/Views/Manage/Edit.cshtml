@@ -1,0 +1,38 @@
+﻿@model ProjectStorage.Web.Areas.Image.Models.Image.ImageEditViewModel
+
+@{
+    ViewBag.Title = "Edit Image";
+    Layout = "_Layout";
+}
+<br/>
+
+<h2>Edit Image</h2>
+
+<hr />
+
+<form method="post">
+    <div class="col-md-4">
+
+        <div class="form-group row">
+            <label asp-for="Title" class="col-2 col-form-label">Title</label>
+            <div class="col-10">
+                <input asp-for="Title" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Categories" class="col-2 col-form-label">Categories</label>
+            <div class="col-10">
+                <select multiple asp-for='Category'>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Value">@category.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Create" />
+    </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

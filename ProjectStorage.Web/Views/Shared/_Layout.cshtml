@@ -25,6 +25,17 @@
                     <li class="nav-item active">
                         <a class="nav-link"  asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
                     </li>
+                    
+                    @if (this.User != null)
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link"  asp-area="Image" asp-controller="Manage" asp-action="Upload">Upload Image</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link"  asp-area="Project" asp-controller="Manage" asp-action="Upload">Upload Project</a>
+                        </li>
+                    
+                    }
                     @if (User.IsInRole(GlobalConstants.AdministratorRole))
                     {
                         <li class="nav-item dropdown active">

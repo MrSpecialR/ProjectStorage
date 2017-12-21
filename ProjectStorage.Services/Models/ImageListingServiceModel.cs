@@ -11,6 +11,7 @@
         public string Path { get; set; }
 
         public string Title { get; set; }
+        public string UploaderId { get; set; }
 
         public void ConfigureMap(Profile profile)
         {

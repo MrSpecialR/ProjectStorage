@@ -51,10 +51,12 @@ namespace ProjectStorage.Services.Implementations
 
         public void Edit(string imageId, string title, IEnumerable<int> imageCategory)
         {
-            var Image = this.db.Images.FirstOrDefault(i => i.Id.ToString() == title);
+            var Image = this.db.Images.FirstOrDefault(i => i.Id.ToString() == imageId);
 
             Image.Title = title;
-            this.db.RemoveRange(Image.Categories);
+            this.db.RemoveRange(this.db.CategoryImages.Where(ic => ic.ImageId == Image.Id).ToList());
+            this.db.SaveChanges();
+
             this.db.AddRange(imageCategory.Select(c => new CategoryImage
             {
                 CategoryId = c,
@@ -105,6 +107,12 @@ namespace ProjectStorage.Services.Implementations
         {
             var image = this.db.Images.FirstOrDefault(i => i.Id.ToString() == id);
             return System.IO.File.ReadAllBytes(image.Path);
+        }
+
+        public ImageListingServiceModel GetImageModel(string id)
+        {
+            return this.db.Images.Where(f => f.Id.ToString() == id).ProjectTo<ImageListingServiceModel>()
+                .FirstOrDefault();
         }
 
         private bool SaveFile(string userId, string imageId, IFormFile file)
