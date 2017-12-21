@@ -11,9 +11,10 @@ using System;
 namespace ProjectStorage.Data.Migrations
 {
     [DbContext(typeof(ProjectStorageDbContext))]
-    partial class ProjectStorageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171221153317_MadeNameFieldOnFilesLonger")]
+    partial class MadeNameFieldOnFilesLonger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

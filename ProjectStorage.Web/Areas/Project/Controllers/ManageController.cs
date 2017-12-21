@@ -26,7 +26,7 @@
         [HttpPost]
         public IActionResult Upload(ProjectCreateModel file)
         {
-            this.projectService.Add(userManager.GetUserId(this.User), file.File);
+            this.projectService.Add(this.userManager.GetUserId(this.User), file.File);
 
             return this.RedirectToAction("Upload");
         }

@@ -1,11 +1,10 @@
-﻿using AutoMapper.QueryableExtensions;
-using ProjectStorage.Services.Models;
-
-namespace ProjectStorage.Services.Implementations
+﻿namespace ProjectStorage.Services.Implementations
 {
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
     using Microsoft.AspNetCore.Http;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -112,6 +111,60 @@ namespace ProjectStorage.Services.Implementations
         public ImageListingServiceModel GetImageModel(string id)
         {
             return this.db.Images.Where(f => f.Id.ToString() == id).ProjectTo<ImageListingServiceModel>()
+                .FirstOrDefault();
+        }
+
+        public bool Exists(string id)
+        {
+            return this.db.Images.FirstOrDefault(i => i.Id.ToString() == id) != null;
+        }
+
+        public CategoryImageListingServiceModel GetImagesByCategory(int categoryId)
+        {
+            var category = this.db.Categories.Where(c => c.Id == categoryId).ProjectTo<CategoryImageListingServiceModel>().FirstOrDefault();
+            if (category == null)
+            {
+                return null;
+            }
+            category.ImageList = this.db.Images.Where(i => i.Categories.Any(c => c.CategoryId == categoryId))
+                .ProjectTo<ImageListingServiceModel>().ToList(); 
+            return category;
+        }
+
+        public void LikeImage(string getUserId, string imageId)
+        {
+            if (this.db.UserFavouriteImages.Any(ufi => ufi.ImageId.ToString() == imageId && ufi.UserId == getUserId))
+            {
+                return;
+            }
+
+            this.db.UserFavouriteImages.Add(new UserFavouriteImages
+            {
+                UserId = getUserId,
+                ImageId = Guid.Parse(imageId)
+            });
+
+            this.db.SaveChanges();
+        }
+
+        public void Dislike(string getUserId, string imageId)
+        {
+            if (this.db.UserFavouriteImages.Any(ufi => ufi.ImageId.ToString() == imageId && ufi.UserId == getUserId))
+            {
+                this.db.Remove(this.db.UserFavouriteImages.First(ufi =>
+                    ufi.ImageId.ToString() == imageId && ufi.UserId == getUserId));
+                this.db.SaveChanges();
+            }
+        }
+
+        public IEnumerable<ImageListingServiceModel> GetAllImagesManage()
+        {
+            return this.db.Images.ProjectTo<ImageListingServiceModel>().ToList();
+        }
+
+        public ImageListingServiceModel GetImageById(string id)
+        {
+            return this.db.Images.Where(i => i.Id.ToString() == id).ProjectTo<ImageListingServiceModel>()
                 .FirstOrDefault();
         }
 

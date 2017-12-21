@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using ProjectStorage.Data.Models;
-using File = ProjectStorage.Data.Models.File;
-
-namespace ProjectStorage.Services.Implementations
+﻿namespace ProjectStorage.Services.Implementations
 {
     using Data;
+    using Data.Models;
     using Microsoft.AspNetCore.Http;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
+    using File = Data.Models.File;
 
     public class ProjectService : IProjectService
     {
 
-        private IDictionary<string, File> files;
-        private IDictionary<string, Folder> folders;
+        private readonly IDictionary<string, File> files;
+        private readonly IDictionary<string, Folder> folders;
 
 
 

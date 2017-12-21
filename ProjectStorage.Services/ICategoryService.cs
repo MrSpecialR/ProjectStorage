@@ -13,5 +13,6 @@
 
         CategoryListingServiceModel GetById(int id);
         void Delete(int id);
+        IEnumerable<CategoryListingServiceModel> GetCategoriesByImage(string imageId);
     }
 }

@@ -1,13 +1,13 @@
-﻿using ProjectStorage.Web.Constants;
-
-namespace ProjectStorage.Web.Areas.Image.Controllers
+﻿namespace ProjectStorage.Web.Areas.Image.Controllers
 {
+    using Constants;
+    using Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using ProjectStorage.Data.Models;
-    using ProjectStorage.Web.Areas.Image.Models.Image;
+    using Models.Image;
+    using Extensions;
     using Services;
     using System.Linq;
 
@@ -25,8 +25,6 @@ namespace ProjectStorage.Web.Areas.Image.Controllers
             this.imageService = imageService;
             this.userManager = userManager;
         }
-
-        // GET
 
         [Authorize]
         public IActionResult Upload()
@@ -71,7 +69,7 @@ namespace ProjectStorage.Web.Areas.Image.Controllers
                 return this.NotFound();
             }
 
-            if (this.userManager.GetUserId(this.User) != image.UploaderId && this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
+            if (this.userManager.GetUserId(this.User) != image.UploaderId && !this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
             {
                 return this.Redirect("/Account/Login");
             }
@@ -106,14 +104,88 @@ namespace ProjectStorage.Web.Areas.Image.Controllers
                 return this.NotFound();
             }
 
-            if (this.userManager.GetUserId(this.User) != imageObj.UploaderId && this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
+            if (this.userManager.GetUserId(this.User) != imageObj.UploaderId && !this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
             {
                 return this.Redirect("/Account/Login");
             }
 
             this.imageService.Edit(id, image.Title, image.Category);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction("Index", "Home", new { area = "Image" });
+        }
+
+
+        [Authorize]
+        public IActionResult Delete(string id)
+        {
+            if (!this.imageService.Exists(id))
+            {
+                return this.NotFound();
+            }
+
+            var image = this.imageService.GetImageModel(id);
+
+            if (this.userManager.GetUserId(this.User) != image.UploaderId && !this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
+            {
+                return this.Redirect("/Account/Login");
+            }
+
+            return this.View(new ImageEditViewModel
+            {
+                Title = image.Title,
+                Categories = this.categoryService.GetCategoriesByImage(image.Id).Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+            });
+        }
+
+        [ActionName("Delete")]
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete_Post(string id)
+        {
+            if (!this.imageService.Exists(id))
+            {
+                return this.NotFound();
+            }
+
+            var image = this.imageService.GetImageModel(id);
+
+            if (this.userManager.GetUserId(this.User) != image.UploaderId && !this.userManager.IsInRoleAsync(this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.ImageModeratorRole).GetAwaiter().GetResult())
+            {
+                return this.Redirect("/Account/Login");
+            }
+
+            this.imageService.Delete(id);
+
+            return this.RedirectToAction("Index", "Home", new {area = "Image"});
+        }
+
+        [Authorize]
+        public IActionResult Like(string imageId)
+        {
+            this.imageService.LikeImage(this.userManager.GetUserId(this.User), imageId);
+            return this.RedirectToAction("Index", "Home", new {area = ""});
+        }
+
+        [Authorize]
+        public IActionResult Dislike(string imageId)
+        {
+            this.imageService.Dislike(this.userManager.GetUserId(this.User), imageId);
+            return this.RedirectToAction("Index", "Home", new { area = "" });
+        }
+
+        [Authorize(Roles = GlobalConstants.ImageModeratorRole)]
+        public IActionResult Moderate()
+        {
+            return this.View(this.imageService.GetAllImagesManage());
+        }
+
+        public IActionResult Details(string id)
+        {
+            return this.ViewOrNotFound(this.imageService.GetImageById(id));
         }
     }
 }

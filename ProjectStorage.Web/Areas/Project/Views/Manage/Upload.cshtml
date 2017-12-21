@@ -9,7 +9,7 @@
 <h2>Upload a Project</h2>
 <hr />
 <form method="post" enctype="multipart/form-data">
-    <div class="col-md-4">
+    <div class="col-md-6">
 
         <div class="form-group row">
             <label asp-for="Title" class="col-2 col-form-label">Title</label>
@@ -26,3 +26,6 @@
         <input type="submit" class="btn btn-primary" value="Create" />
     </div>
 </form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

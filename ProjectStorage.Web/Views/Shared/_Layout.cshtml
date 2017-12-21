@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="navbar-nav">
-        <nav class="navbar navbar-toggleable-md 
+        <nav class="navbar navbar-toggleable-md
                    @(string.IsNullOrEmpty(ViewBag.Style) ? "navbar-light bg-faded" : ViewBag.Style)
              ">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,18 +23,18 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link"  asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    
+
                     @if (this.User != null)
                     {
                         <li class="nav-item active">
-                            <a class="nav-link"  asp-area="Image" asp-controller="Manage" asp-action="Upload">Upload Image</a>
+                            <a class="nav-link" asp-area="Image" asp-controller="Manage" asp-action="Upload">Upload Image</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link"  asp-area="Project" asp-controller="Manage" asp-action="Upload">Upload Project</a>
+                            <a class="nav-link" asp-area="Project" asp-controller="Manage" asp-action="Upload">Upload Project</a>
                         </li>
-                    
+
                     }
                     @if (User.IsInRole(GlobalConstants.AdministratorRole))
                     {
@@ -49,6 +49,13 @@
                             </div>
                         </li>
                     }
+                    @if (User.IsInRole(GlobalConstants.ImageModeratorRole))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="Image" asp-controller="Manage" asp-action="Moderate">Moderate</a>
+                        </li>
+                    }
+
                 </ul>
                 <ul class="nav navbar-nav ml-auto">
                     @await Html.PartialAsync("_LoginPartial")

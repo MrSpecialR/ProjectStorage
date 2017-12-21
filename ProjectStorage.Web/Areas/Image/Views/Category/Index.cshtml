@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CategoryListingServiceModel>
+
+@{
+    ViewBag.Title = "All Categories";
+    Layout = "_Layout";
+}
+<br/>
+<h2>
+    All Categories
+</h2>
+<hr/>
+<ul class="list-group">
+    @foreach (var category in Model)
+    {
+        <li class="list-group-item">@Html.ActionLink(category.Name, "Browse", new { id = category.Id }, null)</li>
+    }
+</ul>

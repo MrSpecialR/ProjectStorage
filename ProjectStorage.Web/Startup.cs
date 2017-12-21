@@ -1,7 +1,4 @@
-﻿using ProjectStorage.Services;
-using ProjectStorage.Services.Implementations;
-
-namespace ProjectStorage.Web
+﻿namespace ProjectStorage.Web
 {
     using AutoMapper;
     using Data;
@@ -17,6 +14,8 @@ namespace ProjectStorage.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
+    using Services;
+    using Services.Implementations;
     using System.IO;
 
     public class Startup

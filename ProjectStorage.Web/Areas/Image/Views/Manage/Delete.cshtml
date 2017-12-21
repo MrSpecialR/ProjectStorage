@@ -1,10 +1,10 @@
 ﻿@model ProjectStorage.Web.Areas.Image.Models.Image.ImageEditViewModel
 
 @{
-    ViewBag.Title = "Edit Image";
+    ViewBag.Title = "Delete Image";
     Layout = "_Layout";
 }
-<br/>
+<br />
 
 <h2>Edit Image</h2>
 
@@ -16,21 +16,21 @@
         <div class="form-group row">
             <label asp-for="Title" class="col-2 col-form-label">Title</label>
             <div class="col-10">
-                <input asp-for="Title" class="form-control" />
+                <input disabled asp-for="Title" class="form-control" />
             </div>
         </div>
         <div class="form-group row">
             <label asp-for="Categories" class="col-2 col-form-label">Categories</label>
             <div class="col-10">
-                <select multiple class="form-control" asp-for='Category'>
+                <select disabled class="form-control" multiple asp-for='Category'>
                     @foreach (var category in Model.Categories)
                     {
-                        <option value="@category.Value">@category.Text</option>
+                        <option disabled value="@category.Value">@category.Text</option>
                     }
                 </select>
             </div>
         </div>
-        <input type="submit" class="btn btn-success" value="Edit" />
+        <input type="submit" class="btn btn-danger" value="Delete" />
     </div>
 </form>
 @section Scripts {

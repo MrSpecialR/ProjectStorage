@@ -62,5 +62,10 @@
 
             this.db.SaveChanges();
         }
+
+        public IEnumerable<CategoryListingServiceModel> GetCategoriesByImage(string imageId)
+        {
+            return this.db.Categories.Where(c => c.Images.Any(i => i.ImageId.ToString() == imageId)).ProjectTo<CategoryListingServiceModel>().ToList();
+        }
     }
 }
