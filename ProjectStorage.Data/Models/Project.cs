@@ -23,6 +23,8 @@
 
         public DateTime UploadDate { get; set; }
 
+        public string RootFolderName { get; set; }
+
         public bool IsPublic { get; set; }
     }
 }

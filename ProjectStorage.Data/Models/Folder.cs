@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProjectStorage.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +14,10 @@
         public int ProjectId { get; set; }
 
         public Project Project { get; set; }
+
+        [Required]
+        [StringLength(200, MinimumLength = 2)]
+        public string FolderName { get; set; }
 
         public Guid? ParentId { get; set; }
 

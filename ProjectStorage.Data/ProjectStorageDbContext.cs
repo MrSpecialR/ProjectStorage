@@ -25,17 +25,25 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<File>()
-                .HasOne(f => f.Project)
-                .WithMany(p => p.Files)
+            builder.Entity<Project>()
+                .HasMany(p => p.Files)
+                .WithOne(f => f.Project)
                 .HasForeignKey(f => f.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Project>()
+                .HasMany(p => p.Folders)
+                .WithOne(f => f.Project)
+                .HasForeignKey(f => f.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Folder>()
                 .HasMany(fo => fo.Files)
                 .WithOne(fi => fi.Folder)
                 .HasForeignKey(fi => fi.FolderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+      
 
             builder.Entity<Folder>()
                 .HasOne(fo => fo.Parent)

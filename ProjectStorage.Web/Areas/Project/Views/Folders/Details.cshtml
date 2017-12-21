@@ -1,0 +1,50 @@
+﻿@model FolderInformationServiceModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<br />
+<div class="container-fluid">
+    <h2>Folder - @Model.FolderName</h2>
+    <a href="/Project/Folders/Download/@Model.Id.ToString()" download class="btn btn-primary">Download Folder</a>
+
+    <hr />
+    <table class="table table-bordered table-hover">
+        <tr>
+            @if (Model.IsInRootFolder)
+            {
+            <tr>
+                <td>
+                    @Html.ActionLink("Project Root", "Details", "Manage", new { area = "Project" , id=Model.ProjectId})
+                </td>
+            </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Parent Directory", "Details", "Folders", new { area = "Project", id = Model.ParentId?.ToString() })
+                        
+                    </td>
+                </tr>
+            }
+            </tr>
+            @foreach (var folder in Model.SubfolderIdentifiers.OrderBy(sf => sf.FolderName))
+            {
+                <tr>
+                    <td>
+                        <strong>@Html.ActionLink(folder.FolderName, "Details", "Folders", new { area = "Project", id = folder.Id })</strong>
+                    </td>
+                </tr>
+            }
+            @foreach (var file in Model.FilesInFolder.OrderBy(f => f.Name))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(file.Name, "Details", "Files", new { area = "Project", id = file.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>

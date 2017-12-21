@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Services.Implementations
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ProjectStorage.Services.Implementations
 {
     using Data;
     using Data.Models;
@@ -36,11 +38,15 @@
             Directory.CreateDirectory(projectFolder);
             List<FileType> filetypes = this.db.FileTypes.ToList();
 
+
+            var root = Guid.NewGuid();
+
             var project = new Project
             {
                 Name = "Default Name for now",
                 IsPublic = false,
                 UploaderId = userId,
+                RootFolderName = root.ToString(),
                 UploadDate = DateTime.UtcNow
             };
 
@@ -52,16 +58,49 @@
 
             this.folders.Add(projectFolder, new Folder
             {
-                Id = Guid.NewGuid(),
+                Id = root,
+                FolderName = Path.GetFileName(projectFolder),
                 ProjectId = project.Id,
                 IsInRootFolder = false
             });
             this.ProcessDirectory(projectFolder, project.Id, filetypes);
 
+            this.folders.Values.Where(f => f.ParentId == root).ToList().ForEach(f =>
+            {
+                f.ParentId = null;
+                f.IsInRootFolder = true;
+            });
+
+            this.folders.Remove(projectFolder);
+
             this.db.AddRange(this.folders.Values);
             this.db.AddRange(this.files.Values);
 
             this.db.SaveChanges();
+        }
+
+        public void Delete(int projectId)
+        {
+         //   var folder = this.db.Projects.FirstOrDefault(p => p.Id == projectId).RootFolderName;
+            var folder = this.GetFolderNameByProjectId(projectId);
+            this.db.RemoveRange(this.db.Files.Where(f => f.IsInRootFolder && f.ProjectId == projectId).ToList());
+            this.db.RemoveRange(this.db.Folders.Where(f => f.ProjectId == projectId).ToList());
+            this.db.SaveChanges();
+            this.db.Projects.Remove(this.db.Projects.FirstOrDefault(p => p.Id == projectId));
+            this.db.SaveChanges();
+            var folderToDelete = ProjectsFolder + folder;
+            Directory.Delete(folderToDelete, true);
+ 
+        }
+
+        private string GetFolderNameByProjectId(int id)
+        {
+            var project = this.db.Projects.Include("Files").FirstOrDefault(p => p.Id == id);
+            var firstFile = project.Files.FirstOrDefault();
+            var path = firstFile.Path;
+            var parts = path.Split(new string[]{ProjectsFolder}, StringSplitOptions.RemoveEmptyEntries).First().Split(new char[]{'\\'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+
+            return parts;
         }
 
         private void SaveProject(IFormFile formFile, string projectFolder)
@@ -78,9 +117,6 @@
                         for (int i = 0; i < countOfNestedDirectories; i++)
                         {
                             Directory.CreateDirectory(projectFolder + "/" + string.Join("/", zipDirectories.Take(i + 1)));
-
-
-
                         }
 
                         if (zipFile.FullName.EndsWith("/"))
@@ -103,7 +139,7 @@
 
         }
 
-        public void ProcessDirectory(string targetDirectory, int projectId, List<FileType> filetypes)
+        private void ProcessDirectory(string targetDirectory, int projectId, List<FileType> filetypes)
         {
             string[] fileEntries = Directory.GetFiles(targetDirectory);
             foreach (string fileName in fileEntries)
@@ -117,6 +153,7 @@
                 this.folders.Add(subdirectory, new Folder
                 {
                     Id = Guid.NewGuid(),
+                    FolderName = Path.GetFileName(subdirectory),
                     ParentId = this.folders[targetDirectory].Id,
                     IsInRootFolder = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder,
                     ProjectId = projectId
@@ -143,8 +180,9 @@
             {
                 Id = Guid.NewGuid(),
                 FolderId = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder ? (Guid?) null : this.folders[targetDirectory].Id,
+                IsInRootFolder = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder,
                 Path = path,
-                Name = path.Split('/').Last(),
+                Name = path.Split('\\').Last(),
                 ProjectId = projectId,
                 FileTypeId = filetypes.FirstOrDefault(ft => ft.Extension==extension).Id
             });

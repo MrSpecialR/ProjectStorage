@@ -5,5 +5,7 @@
     public interface IProjectService
     {
         void Add(string userId, IFormFile file);
+
+        void Delete(int projectId);
     }
 }

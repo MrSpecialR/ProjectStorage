@@ -1,8 +1,7 @@
-﻿using ProjectStorage.Services.Models;
-
-namespace ProjectStorage.Services
+﻿namespace ProjectStorage.Services
 {
     using Microsoft.AspNetCore.Http;
+    using Models;
     using System.Collections.Generic;
 
     public interface IImageService

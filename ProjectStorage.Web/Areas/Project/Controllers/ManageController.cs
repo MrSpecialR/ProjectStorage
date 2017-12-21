@@ -30,5 +30,11 @@
 
             return this.RedirectToAction("Upload");
         }
+
+        public IActionResult Delete(int id)
+        {
+            this.projectService.Delete(id);
+            return this.RedirectToAction("Upload");
+        }
     }
 }

@@ -1,0 +1,24 @@
+﻿@model FileServiceModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+    string s = System.Text.Encoding.Default.GetString(Model.Content, 0, Model.Content.Length);
+
+}
+<h2>@Model.Name</h2>
+
+@if (!Model.IsInRootFolder)
+{
+    @Html.ActionLink("Go to folder", "Details", "Folders", new { area = "Project", id = Model.FolderId.ToString() }, new { @class = "btn btn-info" })
+}
+ @Html.ActionLink("Go to project", "Details", "Manage", new { area = "Project", id = Model.ProjectId }, new { @class = "btn btn-primary" })
+
+<a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary">Download File</a> 
+
+<div class="container-fluid">
+    <p>
+        <pre>@s</pre>
+    </p>
+</div>
+
