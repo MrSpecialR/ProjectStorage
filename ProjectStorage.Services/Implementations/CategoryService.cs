@@ -1,11 +1,9 @@
-﻿using ProjectStorage.Services.Models.Category;
-
-namespace ProjectStorage.Services.Implementations
+﻿namespace ProjectStorage.Services.Implementations
 {
     using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
-    using Models;
+    using Models.Category;
     using System.Collections.Generic;
     using System.Linq;
 
