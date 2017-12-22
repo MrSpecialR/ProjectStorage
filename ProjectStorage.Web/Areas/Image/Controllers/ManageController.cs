@@ -52,7 +52,7 @@
             }
 
             this.imageService.Create(this.userManager.GetUserId(this.User), image.Title, image.Category, image.Image);
-            return this.RedirectToAction("Upload");
+            return this.RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

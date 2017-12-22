@@ -88,10 +88,10 @@
 
         public ImagePageModel GetImagesDescendingByPage(int page)
         {
-            int pageCount = (int)Math.Ceiling(this.db.Images.Count() / 20.0);
+            int pageCount = (int)Math.Ceiling(this.db.Images.Count() / 3.0);
             return new ImagePageModel
             {
-                Images = this.db.Images.Skip((page - 1) * 20).Take(20).ProjectTo<ImageListingServiceModel>().ToList(),
+                Images = this.db.Images.Skip((page - 1) * 3).Take(3).ProjectTo<ImageListingServiceModel>().ToList(),
                 Pages = pageCount,
                 CurrentPage = page
             };
