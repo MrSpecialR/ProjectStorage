@@ -25,5 +25,6 @@
         void Dislike(string getUserId, string imageId);
         IEnumerable<ImageListingServiceModel> GetAllImagesManage();
         ImageListingServiceModel GetImageById(string id);
+        bool LikesImage(string getUserId, string imageId);
     }
 }

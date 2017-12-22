@@ -7,7 +7,7 @@
 <br />
 <div class="container-fluid">
     <h2>Folder - @Model.FolderName</h2>
-    <a href="/Project/Folders/Download/@Model.Id.ToString()" download class="btn btn-primary">Download Folder</a>
+    <a href="/Project/Folders/Download/@Model.Id.ToString()" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download Folder</a>
 
     <hr />
     <table class="table table-bordered table-hover">
@@ -16,7 +16,7 @@
             {
             <tr>
                 <td>
-                    @Html.ActionLink("Project Root", "Details", "Manage", new { area = "Project" , id=Model.ProjectId})
+                    <i class="fa fa-level-up" aria-hidden="true"></i> @Html.ActionLink("Project Root", "Details", "Manage", new { area = "Project", id = Model.ProjectId })
                 </td>
             </tr>
             }
@@ -24,7 +24,7 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink("Parent Directory", "Details", "Folders", new { area = "Project", id = Model.ParentId?.ToString() })
+                        <i class="fa fa-level-up" aria-hidden="true"></i>@Html.ActionLink("Parent Directory", "Details", "Folders", new { area = "Project", id = Model.ParentId?.ToString() })
                         
                     </td>
                 </tr>
@@ -34,7 +34,7 @@
             {
                 <tr>
                     <td>
-                        <strong>@Html.ActionLink(folder.FolderName, "Details", "Folders", new { area = "Project", id = folder.Id })</strong>
+                        <i class="fa fa-folder" aria-hidden="true"></i> @Html.ActionLink(folder.FolderName, "Details", "Folders", new { area = "Project", id = folder.Id })
                     </td>
                 </tr>
             }
@@ -42,7 +42,7 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(file.Name, "Details", "Files", new { area = "Project", id = file.Id })
+                        <i class="fa fa-file-text" aria-hidden="true"></i> @Html.ActionLink(file.Name, "Details", "Files", new { area = "Project", id = file.Id })
                     </td>
                 </tr>
             }

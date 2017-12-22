@@ -5,8 +5,7 @@
 }
 <br />
 
-@Html.ActionLink("Back to All Projects", "Browse", "Manage", new {area="Project"}, new{@class="btn btn-primary"})
-
+<a href="/Project/Manage/Browse" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to All Projects</a>
 @{
     var id = ViewContext.RouteData.Values["id"];
 }
@@ -15,7 +14,7 @@
 <div class="container-fluid">
     
     <h2>Folder - @Model.FolderName</h2>
-    <a href="/Project/Manage/Download/@id" download class="btn btn-primary">Download Project</a>
+    <a href="/Project/Manage/Download/@id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download Project</a>
 
     <hr/>
     <table class="table table-bordered table-hover">
@@ -23,7 +22,7 @@
         {
             <tr>
                 <td>
-                    <strong>@Html.ActionLink(folder.FolderName, "Details", "Folders", new {area = "Project", id = folder.Id})</strong>
+                    <i class="fa fa-folder" aria-hidden="true"></i> @Html.ActionLink(folder.FolderName, "Details", "Folders", new { area = "Project", id = folder.Id })
                 </td>
             </tr>
         }
@@ -31,7 +30,7 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(file.Name, "Details", "Files", new {area = "Project", id = file.Id})
+                    <i class="fa fa-file-text" aria-hidden="true"></i> @Html.ActionLink(file.Name, "Details", "Files", new { area = "Project", id = file.Id })
                 </td>
             </tr>
         }

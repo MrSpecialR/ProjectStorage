@@ -168,6 +168,11 @@
                 .FirstOrDefault();
         }
 
+        public bool LikesImage(string getUserId, string imageId)
+        {
+            return this.db.UserFavouriteImages.Any(ufi => ufi.UserId == getUserId && ufi.ImageId.ToString() == imageId);
+        }
+
         private bool SaveFile(string userId, string imageId, IFormFile file)
         {
             string baseUsersDirectory = "~/../Uploads/Images/Users";

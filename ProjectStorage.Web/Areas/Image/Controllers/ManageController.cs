@@ -164,16 +164,16 @@
         }
 
         [Authorize]
-        public IActionResult Like(string imageId)
+        public IActionResult Like(string id)
         {
-            this.imageService.LikeImage(this.userManager.GetUserId(this.User), imageId);
+            this.imageService.LikeImage(this.userManager.GetUserId(this.User), id);
             return this.RedirectToAction("Index", "Home", new {area = ""});
         }
 
         [Authorize]
-        public IActionResult Dislike(string imageId)
+        public IActionResult Dislike(string id)
         {
-            this.imageService.Dislike(this.userManager.GetUserId(this.User), imageId);
+            this.imageService.Dislike(this.userManager.GetUserId(this.User), id);
             return this.RedirectToAction("Index", "Home", new { area = "" });
         }
 

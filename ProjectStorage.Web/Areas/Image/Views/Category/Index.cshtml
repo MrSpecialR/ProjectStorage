@@ -3,15 +3,20 @@
 @{
     ViewBag.Title = "All Categories";
     Layout = "_Layout";
+    int counter = 1;
 }
 <br/>
 <h2>
     All Categories
 </h2>
 <hr/>
-<ul class="list-group">
+<table class="table table-hover table-primary">
     @foreach (var category in Model)
     {
-        <li class="list-group-item">@Html.ActionLink(category.Name, "Browse", new { id = category.Id }, null)</li>
+        <tr><td>@Html.ActionLink($"{counter}) {category.Name}", "Browse", new { id = category.Id }, null)</td></tr>
+        {
+            counter++;
+        }
     }
-</ul>
+</table>
+ 

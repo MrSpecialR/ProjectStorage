@@ -49,7 +49,11 @@ namespace ProjectStorage.Web.Areas.Administrator.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return this.View(category);
+                return this.View(new CategoryListingServiceModel
+                {
+                    Id = id,
+                    Name = category.Name
+                });
             }
 
             this.categoryService.Edit(id, category.Name);

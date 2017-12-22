@@ -3,6 +3,7 @@
     using AutoMapper;
     using Data.Models;
     using Infrastructure.Configuration;
+    using System;
 
     public class ImageListingServiceModel : ICustomMapConfiguration
     {
@@ -12,7 +13,7 @@
 
         public string Title { get; set; }
         public string UploaderId { get; set; }
-
+        public DateTime UploadDate { get; set; }
         public void ConfigureMap(Profile profile)
         {
             profile.CreateMap<Image, ImageListingServiceModel>()

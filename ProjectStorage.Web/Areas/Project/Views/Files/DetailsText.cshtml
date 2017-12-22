@@ -14,7 +14,7 @@
 }
  @Html.ActionLink("Go to project", "Details", "Manage", new { area = "Project", id = Model.ProjectId }, new { @class = "btn btn-primary" })
 
-<a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary">Download File</a> 
+<a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a> 
 
 <div class="container-fluid">
     <p>
