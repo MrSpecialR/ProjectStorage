@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Web.Areas.Administrator.Controllers
+﻿using ProjectStorage.Services.Models.Category;
+
+namespace ProjectStorage.Web.Areas.Administrator.Controllers
 {
     using Extensions;
     using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Services.Models
+﻿using ProjectStorage.Services.Models.File;
+
+namespace ProjectStorage.Services.Models.Folder
 {
     using Data.Models;
     using Infrastructure.Configuration;

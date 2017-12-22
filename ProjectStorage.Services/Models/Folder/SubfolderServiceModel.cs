@@ -1,7 +1,6 @@
-﻿namespace ProjectStorage.Services.Models
+﻿namespace ProjectStorage.Services.Models.Folder
 {
     using AutoMapper;
-    using Data.Models;
     using Infrastructure.Configuration;
 
     public class SubfolderServiceModel : ICustomMapConfiguration
@@ -12,7 +11,7 @@
 
         public void ConfigureMap(Profile profile)
         {
-            profile.CreateMap<Folder, SubfolderServiceModel>()
+            profile.CreateMap<Data.Models.Folder, SubfolderServiceModel>()
                 .ForMember(c => c.Id, cfg => cfg.MapFrom(im => im.Id.ToString()));
         }
     }

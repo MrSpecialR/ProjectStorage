@@ -1,10 +1,9 @@
-﻿namespace ProjectStorage.Services.Models
+﻿namespace ProjectStorage.Services.Models.Category
 {
-    using Data.Models;
-    using Infrastructure.Configuration;
     using System.ComponentModel.DataAnnotations;
+    using Infrastructure.Configuration;
 
-    public class CategoryListingServiceModel : IMappableFrom<Category>
+    public class CategoryListingServiceModel : IMappableFrom<Data.Models.Category>
     {
         public int Id { get; set; }
 

@@ -1,10 +1,9 @@
-﻿namespace ProjectStorage.Services.Models
+﻿namespace ProjectStorage.Services.Models.File
 {
-    using Data.Models;
     using Infrastructure.Configuration;
     using System;
 
-    public class FileServiceModel : IMappableFrom<File>
+    public class FileServiceModel : IMappableFrom<Data.Models.File>
     {
         public Guid Id { get; set; }
 

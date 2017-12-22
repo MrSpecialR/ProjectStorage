@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Services
+﻿using ProjectStorage.Services.Models.Category;
+
+namespace ProjectStorage.Services
 {
     using Models;
     using System.Collections.Generic;

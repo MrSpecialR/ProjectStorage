@@ -2,7 +2,8 @@
 {
     using AutoMapper.QueryableExtensions;
     using Data;
-    using Models;
+    using Models.File;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class FileService : IFileService
@@ -41,6 +42,11 @@
         {
             var uploader = this.db.Files.Where(f => f.Id.ToString() == fileId).Select(f => f.Project.UploaderId).FirstOrDefault();
             return uploader == userId;
+        }
+
+        public IEnumerable<FileServiceModel> GetFiles()
+        {
+            return this.db.Files.ProjectTo<FileServiceModel>().ToList();
         }
     }
 }

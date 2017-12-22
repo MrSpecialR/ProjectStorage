@@ -1,4 +1,8 @@
-﻿namespace ProjectStorage.Services.Implementations
+﻿using System.Collections.Generic;
+using ProjectStorage.Services.Models.File;
+using ProjectStorage.Services.Models.Folder;
+
+namespace ProjectStorage.Services.Implementations
 {
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -18,6 +22,11 @@
         {
             this.db = db;
             this.mapper = mapper;
+        }
+
+        public IEnumerable<FolderListingServiceModel> GetFolders()
+        {
+            return this.db.Folders.ProjectTo<FolderListingServiceModel>().ToList();
         }
 
         public FolderInformationServiceModel GetFolder(string id)

@@ -8,6 +8,8 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services;
+    using Services.Implementations;
 
     public class Startup
     {
@@ -23,7 +25,13 @@
             services.AddDbContext<ProjectStorageDbContext>(options =>
                 options.UseSqlServer(ConnectionStrings.DefaultConnection));
 
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IFolderService, FolderService>();
             services.AddAutoMapper(cfg => cfg.AddProfile(new SetupAutoMapper()));
+
             services.AddMvc();
         }
 

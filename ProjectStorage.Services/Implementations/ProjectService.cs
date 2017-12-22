@@ -1,4 +1,8 @@
-﻿namespace ProjectStorage.Services.Implementations
+﻿using ProjectStorage.Services.Models.File;
+using ProjectStorage.Services.Models.Folder;
+using ProjectStorage.Services.Models.Project;
+
+namespace ProjectStorage.Services.Implementations
 {
     using AutoMapper.QueryableExtensions;
     using Data;
@@ -176,6 +180,11 @@
         public bool UserIsOwner(int id, string userID)
         {
             return this.db.Projects.Any(p => p.UploaderId == userID && p.Id == id);
+        }
+
+        public ProjectListingModel GetProjectServiceModel(int id)
+        {
+            return this.db.Projects.Where(p => p.Id == id).ProjectTo<ProjectListingModel>().FirstOrDefault();
         }
 
         private void ProcessDirectory(string targetDirectory, int projectId, List<FileType> filetypes)

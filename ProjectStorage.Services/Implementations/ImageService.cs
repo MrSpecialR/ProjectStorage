@@ -5,6 +5,8 @@
     using Data.Models;
     using Microsoft.AspNetCore.Http;
     using Models;
+    using Models.Category;
+    using Models.Image;
     using System;
     using System.Collections.Generic;
     using System.IO;

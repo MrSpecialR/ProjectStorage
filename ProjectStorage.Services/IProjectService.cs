@@ -1,4 +1,7 @@
-﻿namespace ProjectStorage.Services
+﻿using ProjectStorage.Services.Models.Folder;
+using ProjectStorage.Services.Models.Project;
+
+namespace ProjectStorage.Services
 {
     using Microsoft.AspNetCore.Http;
     using Models;
@@ -17,5 +20,6 @@
         byte[] ZipProject(int id);
 
         bool UserIsOwner(int id, string userID);
+        ProjectListingModel GetProjectServiceModel(int id);
     }
 }

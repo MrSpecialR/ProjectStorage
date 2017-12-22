@@ -1,4 +1,4 @@
-﻿namespace ProjectStorage.Services.Models
+﻿namespace ProjectStorage.Services.Models.Image
 {
     using System.Collections.Generic;
 

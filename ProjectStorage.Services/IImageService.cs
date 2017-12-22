@@ -2,6 +2,8 @@
 {
     using Microsoft.AspNetCore.Http;
     using Models;
+    using Models.Category;
+    using Models.Image;
     using System.Collections.Generic;
 
     public interface IImageService

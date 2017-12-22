@@ -1,9 +1,9 @@
-﻿namespace ProjectStorage.Services.Models
+﻿namespace ProjectStorage.Services.Models.Image
 {
     using AutoMapper;
-    using Data.Models;
     using Infrastructure.Configuration;
     using System;
+    using Data.Models;
 
     public class ImageListingServiceModel : ICustomMapConfiguration
     {

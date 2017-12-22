@@ -1,4 +1,6 @@
-﻿namespace ProjectStorage.Services.Implementations
+﻿using ProjectStorage.Services.Models.Category;
+
+namespace ProjectStorage.Services.Implementations
 {
     using AutoMapper.QueryableExtensions;
     using Data;
