@@ -14,5 +14,7 @@
         public Guid ImageId { get; set; }
 
         public Image Image { get; set; }
+
+        public DateTime LikedDate { get; set; }
     }
 }

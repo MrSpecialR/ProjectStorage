@@ -1,6 +1,4 @@
-﻿@using ProjectStorage.Data.Models
-@using ProjectStorage.Web.Constants
-@model IEnumerable<ProjectListingModel>
+﻿@model IEnumerable<ProjectListingModel>
 @inject UserManager<User> UserManager
 
 @{
@@ -10,11 +8,13 @@
 <div class="container-fluid">
     <table class="table table-hover">
         <thead>
-            <th>ID</th>
-            <th>Project Name</th>
-            <th>Uploader</th>
-            <th>Upload Date</th>
-            <th>Actions</th>
+            <tr>
+                <th>ID</th>
+                <th>Project Name</th>
+                <th>Uploader</th>
+                <th>Upload Date</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var project in Model)

@@ -1,25 +1,39 @@
 ﻿@model CategoryImageListingServiceModel
+@inject IImageService ImageService
+@inject UserManager<User> UserManager
 
 @{
-    ViewBag.Title = "Browse by Category - " + Model.Name;
-    Layout = "_Layout";
+    ViewBag.Title = "Category " + Model.Name;
     var counter = 1;
 }
+
 <div class="row">
-@foreach (var image in Model.ImageList)
-{
-    if (counter == 5)
+    @foreach (var image in Model.ImageList)
     {
-        @: </div><div class="row">
-        counter = 1;
+
+        if (counter == 5)
+        {
+            @: </div><div class="row">
+            counter = 1;
+        }
+        <div class="col-4">
+            <a href="/Image/Home/Image/@image.Id"><img class="img-thumbnail" src="/Image/Home/Image/@image.Id" /></a>
+            <h2>
+                @Html.ActionLink(image.Title, "Details", "Home", new { area = "Image", id = image.Id })
+            </h2>
+
+            @if (ImageService.LikesImage(UserManager.GetUserId(User), image.Id))
+            {
+                <p class="text-right"><a href="/Image/Manage/Dislike/@image.Id" class="btn btn-sm btn-danger"><i class="fa fa-heart" aria-hidden="true"></i> Unfavourite</a></p>
+            }
+            else
+            {
+                <p class="text-right"><a href="/Image/Manage/Like/@image.Id" class="btn btn-sm btn-danger"><i class="fa fa-heart-o" aria-hidden="true"></i> Favourite</a></p>
+            }
+
+            <p class="text-right">Uploaded on @image.UploadDate.ToShortDateString()</p>
+        </div>
+
+        { counter++; }
     }
-    <div class="col-4">
-        <img class="img-thumbnail" src="/Image/Home/Image/@image.Id" />
-        <h2>@image.Title</h2>
-        <h2>@image.Id</h2>
-    </div>
-
-
-    { counter++; }
-}
 </div>

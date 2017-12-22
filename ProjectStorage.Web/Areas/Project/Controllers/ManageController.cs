@@ -1,7 +1,6 @@
-﻿using ProjectStorage.Web.Extensions;
-
-namespace ProjectStorage.Web.Areas.Project.Controllers
+﻿namespace ProjectStorage.Web.Areas.Project.Controllers
 {
+    using Constants;
     using Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,6 @@ namespace ProjectStorage.Web.Areas.Project.Controllers
             this.userManager = userManager;
         }
 
-
         public IActionResult Upload()
         {
             return this.View();
@@ -28,9 +26,13 @@ namespace ProjectStorage.Web.Areas.Project.Controllers
         [HttpPost]
         public IActionResult Upload(ProjectCreateModel file)
         {
-            this.projectService.Add(this.userManager.GetUserId(this.User), file.File);
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(file);
+            }
+            var id = this.projectService.Add(this.userManager.GetUserId(this.User), file.File, file.Title);
 
-            return this.RedirectToAction("Upload");
+            return this.RedirectToAction("Details", new { id });
         }
 
         public IActionResult Browse()
@@ -45,9 +47,25 @@ namespace ProjectStorage.Web.Areas.Project.Controllers
 
         public IActionResult Delete(int id)
         {
-            // TODO
+            if (!this.User.IsInRole(GlobalConstants.ProjectTesterRole) && !this.projectService.UserIsOwner(id, this.userManager.GetUserId(this.User)))
+            {
+                return this.Redirect("/Users/Login");
+            }
+
+            return this.View(this.projectService.GetProject(id));
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult Delete_Post(int id)
+        {
+            if (!this.User.IsInRole(GlobalConstants.ProjectTesterRole) && !this.projectService.UserIsOwner(id, this.userManager.GetUserId(this.User)))
+            {
+                return this.Redirect("/Users/Login");
+            }
+
             this.projectService.Delete(id);
-            return this.RedirectToAction("Upload");
+            return this.RedirectToAction("Browse", "Manage");
         }
 
         public IActionResult Download(int id)

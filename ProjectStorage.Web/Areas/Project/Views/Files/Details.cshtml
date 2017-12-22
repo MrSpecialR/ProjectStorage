@@ -1,18 +1,21 @@
 ﻿@model FileServiceModel
+@inject IFileService FileService
+@inject UserManager<User> UserManager
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-
+    ViewBag.Title = Model.Name;
 }
 <h2>@Model.Name</h2>
-
-<a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>
-<hr/>
-<br/>
-
+<hr />
 @if (!Model.IsInRootFolder)
 {
-    @Html.ActionLink("Go to folder", "Details", "Folders", new { area = "Project", id = Model.FolderId.ToString() }, new { @class = "btn btn-info" }) <br /> <br />
+    <a href="/Project/Folders/Details/@Model.FolderId.ToString()" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Folder</a>
 }
-@Html.ActionLink("Go to project", "Details", "Manage", new { area = "Project", id = Model.ProjectId }, new { @class = "btn btn-primary" })
+<a href="/Project/Manage/Details/@Model.ProjectId" class="btn btn-primary"><i class="fa fa-level-up" aria-hidden="true"></i> Go to Project</a>
+<a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>
+
+@if (User.IsInRole(GlobalConstants.ProjectTesterRole) || FileService.IsOwner(UserManager.GetUserId(User), Model.Id.ToString()))
+{
+    @Html.ActionLink("Delete File", "Delete", "Files", new { area = "Project", id = Model.Id.ToString() }, new { @class = "btn btn-danger" })
+
+}

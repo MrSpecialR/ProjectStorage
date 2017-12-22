@@ -1,0 +1,39 @@
+﻿@model ImageListingServiceModel
+@inject IImageService ImageService
+@inject UserManager<User> UserManager
+
+<h2>Image Details - @Model.Title</h2>
+<hr />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <a href="/Image/Home/Image/@Model.Id"><img class="img-thumbnail" src="/Image/Home/Image/@Model.Id" /></a>
+        </div>
+        <div class="col-8">
+
+            <h2>
+                @Html.ActionLink(Model.Title, "Details", "Home", new { area = "Image", id = Model.Id })
+            </h2>
+            <p>Uploaded by User @Model.UploaderName</p>
+            <p class="text-right">
+                <a download="@(Model.Title).png" href="/Image/Home/Image/@Model.Id" class="btn  btn-primary"><i class="fa fa-file-image-o" aria-hidden="true"></i> Download</a>
+            </p>
+            @if (ImageService.LikesImage(UserManager.GetUserId(User), Model.Id))
+            {
+                <p class="text-right">
+                    <a href="/Image/Manage/Dislike/@Model.Id" class="btn btn-danger"><i class="fa fa-heart" aria-hidden="true"></i> Unfavourite</a>
+                </p>
+            }
+            else
+            {
+
+                <p class="text-right">
+                    <a href="/Image/Manage/Like/@Model.Id" class="btn  btn-danger"><i class="fa fa-heart-o" aria-hidden="true"></i> Favourite</a>
+                </p>
+            }
+
+            <p class="text-right">Uploaded on @Model.UploadDate.ToShortDateString()</p>
+        </div>
+    </div>
+    <a href="/Image" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Index</a>
+</div>

@@ -8,6 +8,7 @@
         [Required]
         [StringLength(100, MinimumLength = 4)]
         public string Title { get; set; }
+
         [Required]
         public IFormFile File { get; set; }
     }

@@ -1,12 +1,11 @@
-﻿using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using ProjectStorage.Services.Models;
-
-namespace ProjectStorage.Services.Implementations
+﻿namespace ProjectStorage.Services.Implementations
 {
+    using AutoMapper.QueryableExtensions;
     using Data;
     using Data.Models;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Models;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -16,11 +15,8 @@ namespace ProjectStorage.Services.Implementations
 
     public class ProjectService : IProjectService
     {
-
         private readonly IDictionary<string, File> files;
         private readonly IDictionary<string, Folder> folders;
-
-
 
         private readonly ProjectStorageDbContext db;
 
@@ -51,20 +47,19 @@ namespace ProjectStorage.Services.Implementations
             return folder;
         }
 
-        public void Add(string userId, IFormFile file)
+        public int Add(string userId, IFormFile file, string fileTitle)
         {
             Guid id = Guid.NewGuid();
             string projectFolder = ProjectsFolder + "/" + id;
             Directory.CreateDirectory(projectFolder);
             List<FileType> filetypes = this.db.FileTypes.ToList();
 
-
             var root = Guid.NewGuid();
 
             var project = new Project
             {
-                Name = "Default Name for now",
-                IsPublic = false,
+                Name = fileTitle,
+                IsPublic = true,
                 UploaderId = userId,
                 RootFolderName = id.ToString(),
                 UploadDate = DateTime.UtcNow
@@ -98,11 +93,13 @@ namespace ProjectStorage.Services.Implementations
             this.db.AddRange(this.files.Values);
 
             this.db.SaveChanges();
+
+            return project.Id;
         }
 
         public void Delete(int projectId)
         {
-         //   var folder = this.db.Projects.FirstOrDefault(p => p.Id == projectId).RootFolderName;
+            //   var folder = this.db.Projects.FirstOrDefault(p => p.Id == projectId).RootFolderName;
             var folder = this.GetFolderNameByProjectId(projectId);
             this.db.RemoveRange(this.db.Files.Where(f => f.IsInRootFolder && f.ProjectId == projectId).ToList());
             this.db.RemoveRange(this.db.Folders.Where(f => f.ProjectId == projectId).ToList());
@@ -111,7 +108,6 @@ namespace ProjectStorage.Services.Implementations
             this.db.SaveChanges();
             var folderToDelete = ProjectsFolder + folder;
             Directory.Delete(folderToDelete, true);
- 
         }
 
         public IEnumerable<ProjectListingModel> GetAllProjects()
@@ -124,7 +120,7 @@ namespace ProjectStorage.Services.Implementations
             var project = this.db.Projects.Include("Files").FirstOrDefault(p => p.Id == id);
             var firstFile = project.Files.FirstOrDefault();
             var path = firstFile.Path;
-            var parts = path.Split(new []{ProjectsFolder}, StringSplitOptions.RemoveEmptyEntries).First().Split(new []{'\\'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+            var parts = path.Split(new[] { ProjectsFolder }, StringSplitOptions.RemoveEmptyEntries).First().Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
 
             return parts;
         }
@@ -161,14 +157,11 @@ namespace ProjectStorage.Services.Implementations
                     }
                 }
             }
-
-
         }
 
         public byte[] ZipProject(int id)
         {
-            var directory = "~/../../Uploads/Projects//" +  this.db.Projects.FirstOrDefault(p => p.Id == id).RootFolderName;
-
+            var directory = "~/../../Uploads/Projects//" + this.db.Projects.FirstOrDefault(p => p.Id == id).RootFolderName;
 
             using (var memoryStream = new MemoryStream())
             {
@@ -178,6 +171,11 @@ namespace ProjectStorage.Services.Implementations
                 }
                 return memoryStream.ToArray();
             }
+        }
+
+        public bool UserIsOwner(int id, string userID)
+        {
+            return this.db.Projects.Any(p => p.UploaderId == userID && p.Id == id);
         }
 
         private void ProcessDirectory(string targetDirectory, int projectId, List<FileType> filetypes)
@@ -214,7 +212,7 @@ namespace ProjectStorage.Services.Implementations
                 {
                     Extension = extension
                 };
-                 this.db.FileTypes.Add(newExtensionType);
+                this.db.FileTypes.Add(newExtensionType);
                 filetypes.Add(newExtensionType);
                 this.db.SaveChanges();
             }
@@ -222,12 +220,12 @@ namespace ProjectStorage.Services.Implementations
             this.files.Add(path, new File
             {
                 Id = Guid.NewGuid(),
-                FolderId = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder ? (Guid?) null : this.folders[targetDirectory].Id,
+                FolderId = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder ? (Guid?)null : this.folders[targetDirectory].Id,
                 IsInRootFolder = this.folders[targetDirectory].ParentId == null && !this.folders[targetDirectory].IsInRootFolder,
                 Path = path,
                 Name = path.Split('\\').Last(),
                 ProjectId = projectId,
-                FileTypeId = filetypes.FirstOrDefault(ft => ft.Extension==extension).Id
+                FileTypeId = filetypes.FirstOrDefault(ft => ft.Extension == extension).Id
             });
         }
     }

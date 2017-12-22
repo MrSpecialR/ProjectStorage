@@ -1,7 +1,7 @@
-﻿@model IEnumerable<ProjectStorage.Web.Areas.Administrator.Models.User.UserListingModel>
+﻿@model IEnumerable<UserListingModel>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "All Users";
     var counter = 1;
 }
 <table class="table">
@@ -41,7 +41,7 @@
 
                     @Html.ActionLink("Edit", "Edit", "User", new { id = user.Id }, new { @class = "btn btn-sm btn-success" })
 
-                    @Html.ActionLink("Delete", "Delete", "User", new {id = user.Id}, new {@class = "btn btn-sm btn-danger"})
+                    @Html.ActionLink("Delete", "Delete", "User", new { id = user.Id }, new { @class = "btn btn-sm btn-danger" })
                 </td>
             </tr>
             counter++;

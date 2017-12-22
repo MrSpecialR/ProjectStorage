@@ -4,8 +4,6 @@
     ViewBag.Title = "Upload an Image";
 }
 
-<br />
-
 <h2>Upload an Image</h2>
 <hr />
 <form method="post" enctype="multipart/form-data">
@@ -21,7 +19,7 @@
         <div class="form-group row">
             <label asp-for="Image" class="col-2 col-form-label">Image</label>
             <div class="col-10">
-                <input type="file" asp-for="Image" class="form-control" accept="image/*"/>
+                <input type="file" asp-for="Image" class="form-control" accept="image/*" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
         </div>
@@ -36,7 +34,7 @@
                 </select>
             </div>
         </div>
-        <input type="submit" class="btn btn-primary" value="Create"/>
+        <input type="submit" class="btn btn-primary" value="Create" />
     </div>
 </form>
 @section Scripts {

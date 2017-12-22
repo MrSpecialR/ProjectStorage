@@ -9,7 +9,6 @@
         private readonly IImageService imageService;
         private readonly ICategoryService categoryService;
 
-
         public CategoryController(IImageService imageService, ICategoryService categoryService)
         {
             this.imageService = imageService;

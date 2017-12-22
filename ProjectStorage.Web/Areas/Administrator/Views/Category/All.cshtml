@@ -4,9 +4,7 @@
     ViewBag.Title = "All Categories";
 }
 
-
 <div class="container-fluid">
-    <br />
     <h2>Create a Category</h2>@Html.ActionLink("Create", "Create", "Category", null, new { @class = "btn btn-primary" })
     <hr />
     <table class="table">
@@ -38,8 +36,3 @@
         </tbody>
     </table>
 </div>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

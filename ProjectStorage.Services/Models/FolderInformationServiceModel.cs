@@ -20,6 +20,5 @@
         public IEnumerable<FileServiceModel> FilesInFolder { get; set; }
 
         public bool IsInRootFolder { get; set; }
-
     }
 }

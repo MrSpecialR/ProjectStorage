@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ImageListingServiceModel>
+@inject IImageService ImageService
+@inject UserManager<User> UserManager
+
+@{
+    ViewBag.Title = "Your Favourited Images";
+    var counter = 1;
+}
+
+<h2>Favourited Images</h2>
+<hr />
+
+<div class="row">
+    @foreach (var image in Model)
+    {
+
+        if (counter == 5)
+        {
+            @:</div><div class="row">
+            counter = 1;
+        }
+        <div class="col-4">
+            <a href="/Image/Home/Image/@image.Id"><img class="img-thumbnail" src="/Image/Home/Image/@image.Id" /></a>
+            <h2>
+                @Html.ActionLink(image.Title, "Details", "Home", new { area = "Image", id = image.Id })
+            </h2>
+
+            @if (ImageService.LikesImage(UserManager.GetUserId(User), image.Id))
+            {
+                <p class="text-right"><a href="/Image/Manage/Dislike/@image.Id" class="btn btn-sm btn-danger"><i class="fa fa-heart" aria-hidden="true"></i> Unfavourite</a></p>
+            }
+            else
+            {
+                <p class="text-right"><a href="/Image/Manage/Like/@image.Id" class="btn btn-sm btn-danger"><i class="fa fa-heart-o" aria-hidden="true"></i> Favourite</a></p>
+            }
+
+            <p class="text-right">Uploaded on @image.UploadDate.ToShortDateString()</p>
+        </div>
+
+        { counter++; }
+    }
+</div>

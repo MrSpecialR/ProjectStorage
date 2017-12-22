@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace ProjectStorage.Web.Models.ManageViewModels
+﻿namespace ProjectStorage.Web.Models.ManageViewModels
 {
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public class EnableAuthenticatorViewModel
     {
         [Required]

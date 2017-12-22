@@ -43,8 +43,6 @@
                 .HasForeignKey(fi => fi.FolderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-      
-
             builder.Entity<Folder>()
                 .HasOne(fo => fo.Parent)
                 .WithMany(fo => fo.Subfolders)

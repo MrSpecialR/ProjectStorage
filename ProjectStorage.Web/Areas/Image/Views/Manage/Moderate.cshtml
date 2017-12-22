@@ -5,45 +5,46 @@
     var counter = 1;
 }
 
-
 <div class="container-fluid">
-    <br />
     <h2>Moderate Images</h2>
     <hr />
     <table class="table">
         <thead>
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Upload Date
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Uploader
+                </th>
+                <th>
+                    Upload Date
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var image in Model)
-        {
-            <tr>
-                <td>@counter</td>
-                @{ counter++;}
+            @foreach (var image in Model)
+            {
+                <tr>
+                    <td>@counter</td>
+                    @{ counter++;}
 
-                <td>@image.Title</td>
-
-                <td>@image.UploadDate.ToShortDateString()</td>
-                <td>
-                    @Html.ActionLink("View", "Details", "Manage", new { id = image.Id }, new { @class = "btn btn-sm btn-info" })
-                    @Html.ActionLink("Edit", "Edit", "Manage", new { id = image.Id }, new { @class = "btn btn-sm btn-success" })
-                    @Html.ActionLink("Delete", "Delete", "Manage", new { id = image.Id }, new { @class = "btn  btn-sm btn-danger" })
-                </td>
-            </tr>
-        }
+                    <td>@image.Title</td>
+                    <td>@image.UploaderName</td>
+                    <td>@image.UploadDate.ToShortDateString()</td>
+                    <td>
+                        @Html.ActionLink("View", "Details", "Home", new { id = image.Id }, new { @class = "btn btn-sm btn-info" })
+                        @Html.ActionLink("Edit", "Edit", "Manage", new { id = image.Id }, new { @class = "btn btn-sm btn-success" })
+                        @Html.ActionLink("Delete", "Delete", "Manage", new { id = image.Id }, new { @class = "btn  btn-sm btn-danger" })
+                    </td>
+                </tr>
+                        }
         </tbody>
     </table>
 </div>

@@ -2,14 +2,13 @@
 
 @{
     ViewBag.Title = "All Categories";
-    Layout = "_Layout";
     int counter = 1;
 }
-<br/>
+
 <h2>
     All Categories
 </h2>
-<hr/>
+<hr />
 <table class="table table-hover table-primary">
     @foreach (var category in Model)
     {
@@ -19,4 +18,3 @@
         }
     }
 </table>
- 

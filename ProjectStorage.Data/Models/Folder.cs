@@ -20,7 +20,7 @@ namespace ProjectStorage.Data.Models
         public string FolderName { get; set; }
 
         public string Path { get; set; }
-        
+
         public Guid? ParentId { get; set; }
 
         public Folder Parent { get; set; }

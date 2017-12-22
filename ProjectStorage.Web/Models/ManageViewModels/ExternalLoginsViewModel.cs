@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-
-namespace ProjectStorage.Web.Models.ManageViewModels
+﻿namespace ProjectStorage.Web.Models.ManageViewModels
 {
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
+
     public class ExternalLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }

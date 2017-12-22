@@ -2,13 +2,14 @@
 {
     using Constants;
     using Data.Models;
+    using Extensions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Models.Image;
-    using Extensions;
     using Services;
+    using System;
     using System.Linq;
 
     public class ManageController : ImageBaseController
@@ -38,7 +39,7 @@
                 })
             };
 
-            return View(image);
+            return this.View(image);
         }
 
         [HttpPost]
@@ -114,7 +115,6 @@
             return this.RedirectToAction("Index", "Home", new { area = "Image" });
         }
 
-
         [Authorize]
         public IActionResult Delete(string id)
         {
@@ -160,21 +160,49 @@
 
             this.imageService.Delete(id);
 
-            return this.RedirectToAction("Index", "Home", new {area = "Image"});
+            return this.RedirectToAction("Index", "Home", new { area = "Image" });
         }
 
         [Authorize]
         public IActionResult Like(string id)
         {
             this.imageService.LikeImage(this.userManager.GetUserId(this.User), id);
-            return this.RedirectToAction("Index", "Home", new {area = ""});
+            try
+            {
+                var returnUrl = this.HttpContext.Request.Headers["Referer"].ToString();
+                Uri url = new Uri(returnUrl);
+                var localUrl = url.LocalPath;
+                if (this.Url.IsLocalUrl(localUrl))
+                {
+                    return this.Redirect(returnUrl);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+            return this.RedirectToAction("Index", "Home", new { area = "Image" });
         }
 
         [Authorize]
         public IActionResult Dislike(string id)
         {
             this.imageService.Dislike(this.userManager.GetUserId(this.User), id);
-            return this.RedirectToAction("Index", "Home", new { area = "" });
+            try
+            {
+                var returnUrl = this.HttpContext.Request.Headers["Referer"].ToString();
+                Uri url = new Uri(returnUrl);
+                var localUrl = url.LocalPath;
+                if (this.Url.IsLocalUrl(localUrl))
+                {
+                    return this.Redirect(returnUrl);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+            return this.RedirectToAction("Index", "Home", new { area = "Image" });
         }
 
         [Authorize(Roles = GlobalConstants.ImageModeratorRole)]
@@ -186,6 +214,12 @@
         public IActionResult Details(string id)
         {
             return this.ViewOrNotFound(this.imageService.GetImageById(id));
+        }
+
+        [Authorize]
+        public IActionResult MyLikes()
+        {
+            return this.ViewOrNotFound(this.imageService.GetLikedImages(this.userManager.GetUserId(this.User)));
         }
     }
 }

@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace ProjectStorage.Web.Models.AccountViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ExternalLoginViewModel
     {
         [Required]

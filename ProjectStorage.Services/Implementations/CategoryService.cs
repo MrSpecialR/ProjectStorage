@@ -2,8 +2,8 @@
 {
     using AutoMapper.QueryableExtensions;
     using Data;
-    using Models;
     using Data.Models;
+    using Models;
     using System.Collections.Generic;
     using System.Linq;
 

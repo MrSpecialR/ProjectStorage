@@ -8,7 +8,7 @@
     {
         public IActionResult Index()
         {
-            return View();
+            return this.RedirectToActionPermanent("Index", "Home", new { area = "Image" });
         }
 
         public IActionResult About()

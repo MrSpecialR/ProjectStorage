@@ -1,10 +1,9 @@
 ﻿namespace ProjectStorage.Web.Areas.Administrator.Models.User
 {
+    using Data.Models;
     using Infrastructure.Configuration;
     using System.Collections.Generic;
-    using AutoMapper;
-    using Data.Models;
-    
+
     public class UserListingModel : IMappableFrom<User>
     {
         public string Id { get; set; }

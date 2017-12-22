@@ -332,6 +332,8 @@ namespace ProjectStorage.Data.Migrations
 
                     b.Property<string>("UserId");
 
+                    b.Property<DateTime>("LikedDate");
+
                     b.HasKey("ImageId", "UserId");
 
                     b.HasIndex("UserId");

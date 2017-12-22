@@ -3,8 +3,6 @@
 @{
     ViewBag.Title = "Projects Details";
 }
-<br />
-
 <a href="/Project/Manage/Browse" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to All Projects</a>
 @{
     var id = ViewContext.RouteData.Values["id"];
@@ -12,11 +10,11 @@
 
 <hr />
 <div class="container-fluid">
-    
-    <h2>Folder - @Model.FolderName</h2>
+
+    <h2>Project - @Model.FolderName</h2>
     <a href="/Project/Manage/Download/@id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download Project</a>
 
-    <hr/>
+    <hr />
     <table class="table table-bordered table-hover">
         @foreach (var folder in Model.SubfolderIdentifiers.OrderBy(sf => sf.FolderName))
         {

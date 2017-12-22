@@ -7,7 +7,6 @@
 
     public class HomeController : ImageBaseController
     {
-
         private readonly IImageService imageService;
 
         private readonly ICategoryService categoryService;
@@ -33,6 +32,11 @@
         public IActionResult Image(string id)
         {
             return this.File(this.imageService.GetImage(id), "image/png");
+        }
+
+        public IActionResult Details(string id)
+        {
+            return this.View(this.imageService.GetImageById(id));
         }
     }
 }

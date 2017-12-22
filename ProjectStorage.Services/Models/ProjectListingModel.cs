@@ -1,9 +1,9 @@
 ﻿namespace ProjectStorage.Services.Models
 {
-    using System;
     using AutoMapper;
     using Data.Models;
     using Infrastructure.Configuration;
+    using System;
 
     public class ProjectListingModel : ICustomMapConfiguration
     {

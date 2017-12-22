@@ -6,9 +6,13 @@
 }
 <h2>@Model.Name</h2>
 
-<input disabled class="btn btn-primary" value="Download File"/>
-
 <form method="post">
-    <input type="submit" class="btn btn-danger" value="Delete"/>
+
+    @if (!Model.IsInRootFolder)
+    {
+        <a href="/Project/Folders/Details/@Model.FolderId.ToString()" class="btn btn-info"><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Folder</a>
+    }
+    <a href="/Project/Manage/Details/@Model.ProjectId" class="btn btn-primary"><i class="fa fa-level-up" aria-hidden="true"></i> Go to Project</a>
+    <a href="/Project/Files/Download/@Model.Id" download class="btn btn-primary"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a><br /><br />
+    <input type="submit" class="btn btn-danger" value="Delete" />
 </form>
-@Html.ActionLink("Go to project", "Details", "Manage", new { area = "Project", id = Model.ProjectId }, new { @class = "btn btn-primary" })

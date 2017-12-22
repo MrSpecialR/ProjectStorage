@@ -35,7 +35,12 @@
 
             this.db.Remove(file);
             this.db.SaveChanges();
+        }
 
+        public bool IsOwner(string userId, string fileId)
+        {
+            var uploader = this.db.Files.Where(f => f.Id.ToString() == fileId).Select(f => f.Project.UploaderId).FirstOrDefault();
+            return uploader == userId;
         }
     }
 }

@@ -8,11 +8,14 @@
     {
         FolderInformationServiceModel GetProject(int id);
 
-        void Add(string userId, IFormFile file);
+        int Add(string userId, IFormFile file, string fileTitle);
 
         void Delete(int projectId);
+
         IEnumerable<ProjectListingModel> GetAllProjects();
 
         byte[] ZipProject(int id);
+
+        bool UserIsOwner(int id, string userID);
     }
 }

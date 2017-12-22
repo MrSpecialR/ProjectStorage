@@ -10,7 +10,6 @@
     using System.IO;
     using System.Linq;
 
-
     public class ImageService : IImageService
     {
         private readonly ProjectStorageDbContext db;
@@ -45,7 +44,6 @@
             this.db.SaveChanges();
 
             this.SaveFile(userId, imageId.ToString(), imageImage);
-
         }
 
         public void Edit(string imageId, string title, IEnumerable<int> imageCategory)
@@ -88,7 +86,7 @@
 
         public ImagePageModel GetImagesDescendingByPage(int page)
         {
-            int pageCount = (int) Math.Ceiling(this.db.Images.Count() / 20.0);
+            int pageCount = (int)Math.Ceiling(this.db.Images.Count() / 20.0);
             return new ImagePageModel
             {
                 Images = this.db.Images.Skip((page - 1) * 20).Take(20).ProjectTo<ImageListingServiceModel>().ToList(),
@@ -99,7 +97,7 @@
 
         public IEnumerable<ImageListingServiceModel> GetLikedImages(string userId)
         {
-            return this.db.UserFavouriteImages.Where(u => u.UserId == userId).Select(ufi => ufi.Image).ProjectTo<ImageListingServiceModel>().ToList();
+            return this.db.UserFavouriteImages.Where(u => u.UserId == userId).OrderByDescending(i => i.LikedDate).Select(ufi => ufi.Image).ProjectTo<ImageListingServiceModel>().ToList();
         }
 
         public byte[] GetImage(string id)
@@ -127,7 +125,7 @@
                 return null;
             }
             category.ImageList = this.db.Images.Where(i => i.Categories.Any(c => c.CategoryId == categoryId))
-                .ProjectTo<ImageListingServiceModel>().ToList(); 
+                .ProjectTo<ImageListingServiceModel>().ToList();
             return category;
         }
 
@@ -141,7 +139,8 @@
             this.db.UserFavouriteImages.Add(new UserFavouriteImages
             {
                 UserId = getUserId,
-                ImageId = Guid.Parse(imageId)
+                ImageId = Guid.Parse(imageId),
+                LikedDate = DateTime.UtcNow
             });
 
             this.db.SaveChanges();

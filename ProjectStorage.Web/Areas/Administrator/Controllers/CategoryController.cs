@@ -1,11 +1,10 @@
-﻿using ProjectStorage.Services.Models;
-using ProjectStorage.Web.Areas.Administrator.Models.Category;
-using ProjectStorage.Web.Extensions;
-
-namespace ProjectStorage.Web.Areas.Administrator.Controllers
+﻿namespace ProjectStorage.Web.Areas.Administrator.Controllers
 {
+    using Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Category;
     using Services;
+    using Services.Models;
 
     public class CategoryController : AdministratorBaseController
     {

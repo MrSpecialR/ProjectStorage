@@ -5,7 +5,6 @@
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Models;
-    using System;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -55,6 +54,31 @@
             }
         }
 
+        public void Delete(string folderId)
+        {
+            var folder = this.db.Folders.Include("Parent").FirstOrDefault(f => f.Id.ToString() == folderId);
+            if (folder == null)
+            {
+                return;
+            }
 
+            var filesInFolder = this.db.Files.Where(f => f.FolderId.HasValue && f.FolderId.Value.ToString() == folderId).ToList();
+            this.db.RemoveRange(filesInFolder);
+            this.db.SaveChanges();
+
+            folder.Parent.Subfolders.Remove(folder);
+            folder.Parent = null;
+
+            this.db.SaveChanges();
+
+            this.db.Remove(folder);
+            this.db.SaveChanges();
+        }
+
+        public bool IsOwner(string userId, string folderId)
+        {
+            var uploader = this.db.Folders.Where(f => f.Id.ToString() == folderId).Select(f => f.Project.UploaderId).FirstOrDefault();
+            return uploader == userId;
+        }
     }
 }

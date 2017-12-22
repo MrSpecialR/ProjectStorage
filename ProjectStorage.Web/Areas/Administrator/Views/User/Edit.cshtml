@@ -1,5 +1,8 @@
-﻿@model ProjectStorage.Web.Areas.Administrator.Models.User.UserEditModel
-<br/>
+﻿@model UserEditModel
+
+@{
+    ViewBag.Title = "Edit User Roles - " + Model.Username;
+}
 
 <h4>Edit Course - @Model.Username</h4>
 <hr />
@@ -18,12 +21,12 @@
                 else
                 {
                     <label class="form-check-label">
-                        <input name="Roles" class="form-check-input" type="checkbox" value="@role"/> @role
+                        <input name="Roles" class="form-check-input" type="checkbox" value="@role" /> @role
                     </label>
                 }
                 <br />
             }
-            <br/>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-success" />
             </div>

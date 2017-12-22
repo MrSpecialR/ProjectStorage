@@ -25,7 +25,6 @@
             this.mapper = mapper;
         }
 
-
         public IActionResult All()
         {
             var userRoles = this.userManager.Users.ToList().Select(async u => new
